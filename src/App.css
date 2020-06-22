@@ -1,38 +1,114 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,500,700&display=swap');
+
+:root {
+    --sidebar-flex: 1.5;
+    --condiv-flex: 6;
+    --fontsize-p: 1.2rem;
+    --fontsize-nav: 1.6rem;
+    --typing-font: 3rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Raleway';
+}
+
 .App {
-  text-align: center;
+    display: flex;
+    width: 100vw;
+    min-height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* .condiv class is for the right side content container*/
+.condiv {
+    padding: 100px;
+    background-color: #f4f5f9;
+    flex: var(--condiv-flex);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+nav {
+    padding: 60px 30px 0 30px;
+    flex: var(--sidebar-flex);
+    background: rgb(238, 103, 143);
+    background: linear-gradient(180deg, rgba(238, 103, 143, 1) 50%, rgba(132, 124, 252, 1) 80%);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+nav ul {
+    font-size: var(--fontsize-nav);
+    text-align: center;
+    list-style-type: none;
+    text-decoration: none;
+    color: white !important;
 }
 
-.App-link {
-  color: #61dafb;
+nav ul li {
+    margin: 40px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.active {
+    font-weight: bolder;
+}
+
+.social {
+    position: absolute;
+    margin-top: 20px;
+    display: flex;
+    bottom: 60px;
+}
+
+.social i {
+    padding-right: 30px;
+    font-size: 25px;
+    color: #9a9b9c;
+}
+
+.social i:hover {
+    color: #ffffff;
+}
+
+.home {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.profilePic {
+    border-radius: 50%;
+    width: 200px;
+    margin: 30px;
+}
+
+.typingEffect {
+    font-size: var(--typing-font);
+    margin-bottom: 30px;
+}
+
+.subtopic {
+    margin: 10px 10px 30px 10px !important;
+}
+
+p {
+    font-size: var(--fontsize-p);
+}
+
+h1, h2, h3, h4, p {
+    margin: 10px;
+}
+
+.wideCard {
+    border: 0 solid #9a9b9c;
+    display: flex;
+    margin: 30px 0 30px 0;
+}
+
+.wideCard:hover {
+    color: #1b1d20;
+    background-color: #ffffff;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
