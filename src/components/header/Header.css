@@ -1,0 +1,18 @@
+.app-header {
+    align-items: center;
+    background: #6BB4FF;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+.app-header-logo {
+    background: #FFFFFF;
+    width: 250px;
+}
+
+span {
+    padding-right:3px;
+    padding-top: 3px;
+    display:inline-block;
+}
