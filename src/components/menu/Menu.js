@@ -1,33 +1,28 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-import './Menu.css'
-
 const Menu = () => (
-    <nav class="app-menu">
-        <ul className="app-menu-list">
-            <li className="app-menu-item">
-                <Link className="app-menu-link" to="/">
-                    Home
-                </Link>
-            </li>
-            <li className="app-menu-item">
-                <Link className="app-menu-link" to="/air">
+    <div className="collapse navbar-collapse" id="navbarColor02">
+        <ul className="navbar-nav mr-auto">
+            <li className="nav-item active">
+                <Link className="nav-link" to="/air">
                     Aéreo
                 </Link>
             </li>
-            <li className="app-menu-item">
-                <Link className="app-menu-link" to="/hotel">
+
+            <li className="nav-item active">
+                <Link className="nav-link" to="/hotel">
                     Hotéis
                 </Link>
             </li>
-            <li className="app-menu-item">
-                <Link className="app-menu-link" to="/car-rental">
+
+            <li className="nav-item active">
+                <Link className="nav-link" to="/car-rental">
                     Aluguel de carros
                 </Link>
             </li>
         </ul>
-    </nav>
+    </div>
 )
 
 export default Menu
