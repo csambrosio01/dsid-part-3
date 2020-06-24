@@ -56,7 +56,6 @@ class Login extends React.Component {
 
         let login = this.state.login;
         if (this.validateForm(login)) {
-            debugger;
             this.userService.login(login)
                 .then (() => {
                     store.addNotification({
