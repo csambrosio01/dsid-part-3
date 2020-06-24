@@ -63,9 +63,7 @@ class CreateUser extends React.Component {
         if (this.validateForm(user)) {
             user.phoneNumber = user.phoneNumber.replace(/\D/g,'')
             this.userService.createUser(user)
-                .then(response => {
-                    this.userService.save(response.data)
-
+                .then(() => {
                     store.addNotification({
                         title: 'Sucesso!',
                         message: 'Usuário criado com sucesso',
