@@ -79,7 +79,7 @@ class CreateUser extends React.Component {
                 .catch(error => {
                     store.addNotification({
                         title: 'Falha!',
-                        message: 'Não foi possível criar o usuário',
+                        message: error.response.data.error,
                         type: 'danger',
                         container: 'top-center',
                         animationIn: ["animated", "fadeIn"],
