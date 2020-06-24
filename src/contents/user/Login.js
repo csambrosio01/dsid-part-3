@@ -5,7 +5,7 @@ import Card from "../../components/Card";
 const initialState = {
     login: {
         username: '',
-        password: ''
+        loginPassword: ''
     },
     errors: {}
 }
@@ -42,7 +42,7 @@ class Login extends React.Component {
                                 <div className="form-group">
                                     <label>Senha:</label>
                                     <input type="password"
-                                           name="password"
+                                           name="loginPassword"
                                            value={this.state.login.password}
                                            onChange={this.onChange}
                                            className="form-control"/>
