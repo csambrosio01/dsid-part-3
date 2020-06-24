@@ -25,6 +25,7 @@ class Menu extends React.Component {
         this.userService.logout()
             .then(() => {
                 this.props.history.push('/')
+                this.setState({user: undefined})
             })
             .catch(error => {
                 store.addNotification({
