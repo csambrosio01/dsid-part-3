@@ -1,15 +1,14 @@
 import React from 'react'
 
-import Container from '../components/container'
 import Footer from '../components/footer'
 import Header from '../components/header'
 
 const App = ({children}) => (
     <>
         <Header/>
-        <Container>
+        <div className="container">
             {children}
-        </Container>
+        </div>
         <Footer/>
     </>
 )
