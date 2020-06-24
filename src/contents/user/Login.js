@@ -6,7 +6,7 @@ import UserService from "../../app/UserService";
 const initialState = {
     login: {
         username: '',
-        loginPassword: ''
+        password: ''
     },
     errors: {}
 }
@@ -59,12 +59,12 @@ class Login extends React.Component {
                                 <div className="form-group">
                                     <label>Senha:</label>
                                     <input type="password"
-                                           name="loginPassword"
+                                           name="password"
                                            value={this.state.login.password}
                                            onChange={this.onChange}
                                            onBlur={this.onBlur}
                                            className="form-control"/>
-                                    <span style={{color: "red"}}>{this.state.errors["loginPassword"]}</span>
+                                    <span style={{color: "red"}}>{this.state.errors["password"]}</span>
                                 </div>
                             </div>
                         </div>
