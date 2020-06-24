@@ -41,14 +41,14 @@ class CreateUser extends React.Component {
     }
 
     onChange = (event) => {
-        const { name, value } = event.target;
+        const {name, value} = event.target;
         let user = this.state.user
         user[name] = value
         this.setState({user})
     }
 
     onBlur = (event) => {
-        const { name, value } = event.target;
+        const {name, value} = event.target;
 
         let errors = this.state.errors;
         errors = this.userService.validateField(this.state.user, errors, name, value)
@@ -61,7 +61,7 @@ class CreateUser extends React.Component {
 
         let user = this.state.user;
         if (this.validateForm(user)) {
-            user.phoneNumber = user.phoneNumber.replace(/\D/g,'')
+            user.phoneNumber = user.phoneNumber.replace(/\D/g, '')
             this.userService.createUser(user)
                 .then(() => {
                     store.addNotification({
