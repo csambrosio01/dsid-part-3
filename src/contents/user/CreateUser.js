@@ -2,6 +2,7 @@ import React from "react";
 
 import {store} from 'react-notifications-component';
 import NumberFormat from 'react-number-format';
+import Loader from 'react-loader-spinner'
 
 import UserService from '../../app/UserService'
 
@@ -17,7 +18,8 @@ const initialState = {
         phoneNumber: '',
         confirmPassword: ''
     },
-    errors: {}
+    errors: {},
+    loading: false
 }
 
 class CreateUser extends React.Component {
@@ -58,6 +60,7 @@ class CreateUser extends React.Component {
 
     onSubmit = (event) => {
         event.preventDefault();
+        this.setState({loading: true})
 
         let user = this.state.user;
         if (this.validateForm(user)) {
@@ -77,6 +80,8 @@ class CreateUser extends React.Component {
                     })
 
                     this.props.history.push('/')
+
+                    this.setState({loading: false})
                 })
                 .catch(error => {
                     store.addNotification({
@@ -90,6 +95,8 @@ class CreateUser extends React.Component {
                             duration: 3000
                         }
                     })
+
+                    this.setState({loading: false})
                 })
         } else {
             store.addNotification({
@@ -103,6 +110,8 @@ class CreateUser extends React.Component {
                     duration: 3000
                 }
             })
+
+            this.setState({loading: false})
         }
     }
 
@@ -110,6 +119,7 @@ class CreateUser extends React.Component {
         return (
             <App>
                 <Card header={"Cadastrar um novo usuário"}>
+                    {!this.state.loading &&
                     <form onSubmit={this.onSubmit}>
                         <div className="row">
                             <div className="col-md-6">
@@ -202,6 +212,13 @@ class CreateUser extends React.Component {
                             </div>
                         </div>
                     </form>
+                    }
+
+                    {this.state.loading &&
+                    <div className="d-flex justify-content-center">
+                        <Loader type="Oval" color="Blue" height={100} width={100}/>
+                    </div>
+                    }
                 </Card>
             </App>
         )
