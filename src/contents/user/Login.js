@@ -1,6 +1,7 @@
 import React from "react";
 import App from "../../containers/App";
 import Card from "../../components/Card";
+import UserService from "../../app/UserService";
 
 const initialState = {
     login: {
@@ -13,11 +14,25 @@ const initialState = {
 class Login extends React.Component {
     state = initialState;
 
+    constructor(props) {
+        super(props);
+        this.userService = new UserService();
+    }
+
     onChange = (event) => {
         const { name, value } = event.target;
         let login = this.state.login
         login[name] = value
         this.setState({login})
+    }
+
+    onBlur = (event) => {
+        const { name, value } = event.target;
+
+        let errors = this.state.errors;
+        errors = this.userService.validateField(this.state.user, errors, name, value)
+
+        this.setState({errors})
     }
 
     render() {
@@ -33,7 +48,9 @@ class Login extends React.Component {
                                            name="username"
                                            value={this.state.login.username}
                                            onChange={this.onChange}
+                                           onBlur={this.onBlur}
                                            className="form-control"/>
+                                    <span style={{color: "red"}}>{this.state.errors["username"]}</span>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +62,9 @@ class Login extends React.Component {
                                            name="loginPassword"
                                            value={this.state.login.password}
                                            onChange={this.onChange}
+                                           onBlur={this.onBlur}
                                            className="form-control"/>
+                                    <span style={{color: "red"}}>{this.state.errors["loginPassword"]}</span>
                                 </div>
                             </div>
                         </div>
