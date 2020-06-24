@@ -69,6 +69,15 @@ class UserService {
                 this.save(response.data)
             })
     }
+
+    getUser = () => {
+        return Api.get('/users/logged')
+            .then(response => {
+                const user = response.data
+                this.save(response.data)
+                return user
+            })
+    }
 }
 
 export default UserService
