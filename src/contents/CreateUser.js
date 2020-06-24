@@ -2,6 +2,8 @@ import React from "react";
 
 import NumberFormat from 'react-number-format';
 
+import UserService from '../app/UserService'
+
 import App from "../containers/App";
 
 const initialState = {
@@ -18,6 +20,11 @@ const initialState = {
 
 class CreateUser extends React.Component {
     state = initialState;
+
+    constructor(props) {
+        super(props);
+        this.userService = new UserService();
+    }
 
     onChange = (event) => {
         const { name, value } = event.target;
