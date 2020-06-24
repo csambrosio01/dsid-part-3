@@ -91,6 +91,18 @@ class Login extends React.Component {
                     this.setState({loading: false})
                 })
         } else {
+            store.addNotification({
+                title: 'Falha!',
+                message: 'Verifique os campos e tente novamente',
+                type: 'danger',
+                container: 'top-center',
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000
+                }
+            })
+
             this.setState({loading: false})
         }
     }
