@@ -2,7 +2,24 @@ import React from "react";
 import App from "../../containers/App";
 import Card from "../../components/Card";
 
+const initialState = {
+    login: {
+        username: '',
+        password: ''
+    },
+    errors: {}
+}
+
 class Login extends React.Component {
+    state = initialState;
+
+    onChange = (event) => {
+        const { name, value } = event.target;
+        let login = this.state.login
+        login[name] = value
+        this.setState({login})
+    }
+
     render() {
         return (
             <App>
@@ -14,6 +31,8 @@ class Login extends React.Component {
                                     <label>Usuário:</label>
                                     <input type="text"
                                            name="username"
+                                           value={this.state.login.username}
+                                           onChange={this.onChange}
                                            className="form-control"/>
                                 </div>
                             </div>
@@ -24,6 +43,8 @@ class Login extends React.Component {
                                     <label>Senha:</label>
                                     <input type="password"
                                            name="password"
+                                           value={this.state.login.password}
+                                           onChange={this.onChange}
                                            className="form-control"/>
                                 </div>
                             </div>
