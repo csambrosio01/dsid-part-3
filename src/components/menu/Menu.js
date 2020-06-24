@@ -22,19 +22,11 @@ class Menu extends React.Component {
     }
 
     logout = () => {
-        debugger;
-        this.setState({logoutButtonEnabled: false})
-
         this.userService.logout()
             .then(() => {
-                debugger;
-                this.setState({logoutButtonEnabled: true})
                 this.props.history.push('/')
             })
             .catch(error => {
-                debugger;
-                this.setState({logoutButtonEnabled: true})
-
                 store.addNotification({
                     title: 'Falha!',
                     message: 'Não foi possível deslogar, tente novamente',
