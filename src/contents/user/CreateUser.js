@@ -75,6 +75,8 @@ class CreateUser extends React.Component {
                             duration: 3000
                         }
                     })
+
+                    this.props.history.push('/')
                 })
                 .catch(error => {
                     store.addNotification({
