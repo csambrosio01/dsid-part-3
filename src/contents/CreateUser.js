@@ -36,9 +36,9 @@ class CreateUser extends React.Component {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label>Telefone:</label>
-                                        <input type="text"
-                                               name="phoneNumber"
-                                               className="form-control"/>
+                                        <NumberFormat name="phoneNumber"
+                                                      format="(##) ##### ####"
+                                                      className="form-control"/>
                                     </div>
                                 </div>
                             </div>
