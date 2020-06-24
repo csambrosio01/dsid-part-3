@@ -56,7 +56,7 @@ class CreateUser extends React.Component {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label>Senha:</label>
-                                        <input type="text"
+                                        <input type="password"
                                                name="password"
                                                className="form-control"/>
                                     </div>
