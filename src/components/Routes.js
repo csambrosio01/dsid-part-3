@@ -5,7 +5,7 @@ import Air from "../contents/Air";
 import CarRental from "../contents/CarRental";
 import Hotel from "../contents/Hotel";
 import Home from "../contents/Home";
-import CreateUser from "../contents/CreateUser";
+import CreateUser from "../contents/user/CreateUser";
 
 const Routes = () => (
     <Router>

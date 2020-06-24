@@ -3,10 +3,10 @@ import React from "react";
 import {store} from 'react-notifications-component';
 import NumberFormat from 'react-number-format';
 
-import UserService from '../app/UserService'
+import UserService from '../../app/UserService'
 
-import App from "../containers/App";
-import Card from "../components/Card";
+import App from "../../containers/App";
+import Card from "../../components/Card";
 
 const initialState = {
     user: {
