@@ -11,6 +11,10 @@ class UserService {
         localStorage.setItem(USER, JSON.stringify(user))
     }
 
+    delete = () => {
+        localStorage.removeItem(USER)
+    }
+
     validateField = (user, errors, fieldName, fieldValue) => {
         switch (fieldName) {
             case 'name':
@@ -67,6 +71,23 @@ class UserService {
         return Api.post('/login', login)
             .then(response => {
                 this.save(response.data)
+            })
+    }
+
+    getUser = () => {
+        return Api.get('/users/logged')
+            .then(response => {
+                const user = response.data
+                this.save(response.data)
+                return user
+            })
+    }
+
+    logout = () => {
+        return Api.post('/logout')
+            .then((response) => {
+                this.delete()
+                return response
             })
     }
 }

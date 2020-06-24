@@ -5,17 +5,15 @@ import Card from "../../components/Card";
 import UserService from "../../app/UserService";
 import Loader from "react-loader-spinner";
 
-const initialState = {
-    login: {
-        username: '',
-        password: ''
-    },
-    errors: {},
-    loading: false
-}
-
 class Login extends React.Component {
-    state = initialState;
+    state = {
+        login: {
+            username: '',
+            password: ''
+        },
+        errors: {},
+        loading: false
+    }
 
     constructor(props) {
         super(props);

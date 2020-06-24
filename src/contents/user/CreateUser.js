@@ -9,21 +9,19 @@ import UserService from '../../app/UserService'
 import App from "../../containers/App";
 import Card from "../../components/Card";
 
-const initialState = {
-    user: {
-        username: '',
-        password: '',
-        name: '',
-        email: '',
-        phoneNumber: '',
-        confirmPassword: ''
-    },
-    errors: {},
-    loading: false
-}
-
 class CreateUser extends React.Component {
-    state = initialState;
+    state = {
+        user: {
+            username: '',
+            password: '',
+            name: '',
+            email: '',
+            phoneNumber: '',
+            confirmPassword: ''
+        },
+        errors: {},
+        loading: false
+    }
 
     constructor(props) {
         super(props);
