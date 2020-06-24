@@ -3,13 +3,15 @@ import {store} from 'react-notifications-component';
 import App from "../../containers/App";
 import Card from "../../components/Card";
 import UserService from "../../app/UserService";
+import Loader from "react-loader-spinner";
 
 const initialState = {
     login: {
         username: '',
         password: ''
     },
-    errors: {}
+    errors: {},
+    loading: false
 }
 
 class Login extends React.Component {
@@ -50,6 +52,7 @@ class Login extends React.Component {
 
     onSubmit = (event) => {
         event.preventDefault();
+        this.setState({loading: true})
 
         let login = this.state.login;
         if (this.validateForm(login)) {
@@ -69,6 +72,8 @@ class Login extends React.Component {
                     })
 
                     this.props.history.push('/')
+
+                    this.setState({loading: false})
                 })
                 .catch(error => {
                     store.addNotification({
@@ -82,7 +87,23 @@ class Login extends React.Component {
                             duration: 3000
                         }
                     })
+
+                    this.setState({loading: false})
                 })
+        } else {
+            store.addNotification({
+                title: 'Falha!',
+                message: 'Verifique os campos e tente novamente',
+                type: 'danger',
+                container: 'top-center',
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000
+                }
+            })
+
+            this.setState({loading: false})
         }
     }
 
@@ -90,6 +111,7 @@ class Login extends React.Component {
         return (
             <App>
                 <Card header={"Logue em sua conta"}>
+                    {!this.state.loading &&
                     <form onSubmit={this.onSubmit}>
                         <div className="row">
                             <div className="col-md-6">
@@ -125,6 +147,14 @@ class Login extends React.Component {
                             </div>
                         </div>
                     </form>
+                    }
+
+                    {this.state.loading &&
+                    <div className="d-flex justify-content-center">
+                        <Loader type="Oval" color="Blue" height={100} width={100}/>
+                    </div>
+                    }
+
                 </Card>
             </App>
         )
