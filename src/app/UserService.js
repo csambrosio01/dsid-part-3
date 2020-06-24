@@ -58,6 +58,16 @@ class UserService {
 
     createUser = (user) => {
         return Api.post('/users/create', user)
+            .then(response => {
+                this.save(response.data)
+            })
+    }
+
+    login = (login) => {
+        return Api.post('/login', login)
+            .then(response => {
+                this.save(response.data)
+            })
     }
 }
 

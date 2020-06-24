@@ -23,6 +23,12 @@ const Menu = () => (
             </li>
 
             <li className="nav-item active">
+                <Link className="nav-link" to="/login">
+                    Login
+                </Link>
+            </li>
+
+            <li className="nav-item active">
                 <Link className="nav-link" to="/create-user">
                     Cadastre-se
                 </Link>
