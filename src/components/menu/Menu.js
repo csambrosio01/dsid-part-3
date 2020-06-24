@@ -1,6 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import UserService from "../../app/UserService";
+import {store} from "react-notifications-component";
+import {withRouter} from 'react-router'
 
 class Menu extends React.Component {
     state = {
@@ -16,6 +18,34 @@ class Menu extends React.Component {
         this.userService.getUser()
             .then(user => {
                 this.setState({user})
+            })
+    }
+
+    logout = () => {
+        debugger;
+        this.setState({logoutButtonEnabled: false})
+
+        this.userService.logout()
+            .then(() => {
+                debugger;
+                this.setState({logoutButtonEnabled: true})
+                this.props.history.push('/')
+            })
+            .catch(error => {
+                debugger;
+                this.setState({logoutButtonEnabled: true})
+
+                store.addNotification({
+                    title: 'Falha!',
+                    message: 'Não foi possível deslogar, tente novamente',
+                    type: 'danger',
+                    container: 'top-center',
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000
+                    }
+                })
             })
     }
 
@@ -58,10 +88,18 @@ class Menu extends React.Component {
                         </Link>
                     </li>
                     }
+
+                    {this.state.user &&
+                    <button type="button"
+                            className="btn btn-danger"
+                            onClick={this.logout}>
+                        Logout
+                    </button>
+                    }
                 </ul>
             </div>
         )
     }
 }
 
-export default Menu
+export default withRouter(Menu)
