@@ -12,7 +12,8 @@ const initialState = {
         email: '',
         phoneNumber: '',
         confirmPassword: ''
-    }
+    },
+    errors: {}
 }
 
 class CreateUser extends React.Component {
@@ -23,6 +24,15 @@ class CreateUser extends React.Component {
         let user = this.state.user
         user[name] = value
         this.setState({user})
+    }
+
+    onBlur = (event) => {
+        const { name, value } = event.target;
+
+        let errors = this.state.errors;
+        errors = this.userService.validateField(this.state.user, errors, name, value)
+
+        this.setState({errors})
     }
 
     render() {
@@ -42,7 +52,9 @@ class CreateUser extends React.Component {
                                                name="name"
                                                value={this.state.user.name}
                                                onChange={this.onChange}
+                                               onBlur={this.onBlur}
                                                className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["name"]}</span>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +66,9 @@ class CreateUser extends React.Component {
                                                name="email"
                                                value={this.state.user.email}
                                                onChange={this.onChange}
+                                               onBlur={this.onBlur}
                                                className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["email"]}</span>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +80,9 @@ class CreateUser extends React.Component {
                                                       format="(##) ##### ####"
                                                       value={this.state.user.phoneNumber}
                                                       onChange={this.onChange}
+                                                      onBlur={this.onBlur}
                                                       className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["phoneNumber"]}</span>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +94,9 @@ class CreateUser extends React.Component {
                                                name="username"
                                                value={this.state.user.username}
                                                onChange={this.onChange}
+                                               onBlur={this.onBlur}
                                                className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["username"]}</span>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +108,9 @@ class CreateUser extends React.Component {
                                                name="password"
                                                value={this.state.user.password}
                                                onChange={this.onChange}
+                                               onBlur={this.onBlur}
                                                className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["password"]}</span>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +122,9 @@ class CreateUser extends React.Component {
                                                name="confirmPassword"
                                                value={this.state.user.confirmPassword}
                                                onChange={this.onChange}
+                                               onBlur={this.onBlur}
                                                className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["confirmPassword"]}</span>
                                     </div>
                                 </div>
                             </div>
