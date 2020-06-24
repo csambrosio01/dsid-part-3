@@ -21,6 +21,12 @@ const Menu = () => (
                     Aluguel de carros
                 </Link>
             </li>
+
+            <li className="nav-item active">
+                <Link className="nav-link" to="/create-user">
+                    Cadastre-se
+                </Link>
+            </li>
         </ul>
     </div>
 )
