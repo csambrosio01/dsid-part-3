@@ -1,6 +1,7 @@
 import React from 'react'
 
 import App from "../containers/App";
+import FlightHighlight from "../components/home/flightHighlight/FlightHighlight";
 
 class Home extends React.Component {
 
@@ -10,7 +11,8 @@ class Home extends React.Component {
                 <ol className="breadcrumb">
                     <h1>Principais ofertas</h1>
                 </ol>
-                <h2>Aéreo</h2>
+
+                <FlightHighlight/>
 
                 <h2>Hotéis</h2>
 
