@@ -6,7 +6,7 @@ import Header from '../components/header'
 const App = ({children}) => (
     <>
         <Header/>
-        <div className="container">
+        <div className="container min-vh-80">
             {children}
         </div>
         <Footer/>

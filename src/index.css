@@ -1,3 +1,7 @@
 body {
     margin: 0;
 }
+
+.min-vh-80 {
+    min-height: 80vh;
+}
