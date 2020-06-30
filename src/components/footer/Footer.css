@@ -2,6 +2,7 @@
     background: #62667b;
     padding: .5rem 2rem;
     text-align: right;
+    min-height: 12vh;
 }
 
 .app-footer-message {
