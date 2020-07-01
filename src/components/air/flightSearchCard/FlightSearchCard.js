@@ -83,6 +83,28 @@ class FlightSearchCard extends React.Component {
         this.setState({searchObject})
     }
 
+    onClassChanged = (event) => {
+        const value = event.target.value
+        let searchObject = this.state.searchObject
+
+        switch (value) {
+            case 'Econômica':
+                searchObject.travelClass = 'ECONOMY'
+                break;
+            case 'Econômica Premium':
+                searchObject.travelClass = 'PREMIUM_ECONOMY'
+                break;
+            case 'Business':
+                searchObject.travelClass = 'BUSINESS'
+                break;
+            case 'Primeira Classe':
+                searchObject.travelClass = 'FIRST'
+                break;
+        }
+
+        this.setState({searchObject})
+    }
+
     onClick = () => {
         this.props.onSearchCliked(this.state.searchObject)
     }
@@ -165,7 +187,8 @@ class FlightSearchCard extends React.Component {
                                 <label className="card-text mb-0">
                                     Classe
                                 </label>
-                                <select className="select-field">
+                                <select className="select-field"
+                                        onChange={this.onClassChanged}>
                                     {travelClasses.map(option => {
                                         return (
                                             <option key={option}>{option}</option>
