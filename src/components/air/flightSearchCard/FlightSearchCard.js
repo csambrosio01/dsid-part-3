@@ -69,6 +69,7 @@ class FlightSearchCard extends React.Component {
                 break;
             case (name === 'oneWayTrue' && value === 'on'):
                 searchObject.oneWay = true
+                searchObject.returnDate = undefined
                 break;
         }
         this.setState({searchObject});
