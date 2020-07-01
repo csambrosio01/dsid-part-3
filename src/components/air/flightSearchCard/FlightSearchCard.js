@@ -4,12 +4,13 @@ import SearchInput from "./SearchInput";
 import './flightSearchCard.css'
 
 const travelClasses = ['Econômica', 'Econômica Premium', 'Business', 'Primeira Classe']
+const oneDayInMillis = 24 * 60 * 60 * 1000
 
 class FlightSearchCard extends React.Component {
     state = {
         searchObject: {
             departureDate: new Date(),
-            returnDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            returnDate: new Date(Date.now() + 7 * oneDayInMillis),
             travelClass: 'ECONOMY',
             origin: '',
             destination: '',
