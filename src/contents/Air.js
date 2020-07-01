@@ -5,6 +5,7 @@ import FlightSearchCard from "../components/air/flightSearchCard/FlightSearchCar
 import FlightService from "../app/FlightService";
 import Loader from "react-loader-spinner";
 import FlightInfoCard from "../components/air/flightInfoCard/FlightInfoCard";
+import FlightSearchInfoCard from "../components/air/flightSearchInfoCard/FlightSearchInfoCard";
 
 class Air extends React.Component {
     state = {
@@ -80,6 +81,12 @@ class Air extends React.Component {
                                 <h2>Sua busca</h2>
                             </div>
                         </div>
+                        {this.state.flightSearchOffers.map(flightOffer => {
+                            return (
+                                <FlightSearchInfoCard flightOffer={flightOffer}/>
+                            )
+                        })}
+
                     </div>
                     }
                     {(this.state.hasSearched && this.state.isFlightSearchOffersLoading) &&
