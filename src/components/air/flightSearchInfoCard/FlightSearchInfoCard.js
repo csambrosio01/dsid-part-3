@@ -41,11 +41,16 @@ class FlightSearchInfoCard extends React.Component {
                         <h4 className="card-text col-md-6">{this.flightService.getNumberOfStops(this.props.flightOffer.itineraries[0].segments.length - 1)}</h4>
                         <h4 className="card-text col-md-6">Duração: {this.flightService.convertDuration(this.props.flightOffer.itineraries[0].duration)}</h4>
                     </div>
-                    <h3 className="card-text mt-2">Volta</h3>
-                    <div className="row">
-                        <h4 className="card-text col-md-6">{this.flightService.getNumberOfStops(this.props.flightOffer.itineraries[1].segments.length - 1)}</h4>
-                        <h4 className="card-text col-md-6">Duração: {this.flightService.convertDuration(this.props.flightOffer.itineraries[1].duration)}</h4>
+                    {this.props.flightOffer.oneWay &&
+                    <div>
+                        <h3 className="card-text mt-2">Volta</h3>
+                        <div className="row">
+                            <h4 className="card-text col-md-6">{this.flightService.getNumberOfStops(this.props.flightOffer.itineraries[1].segments.length - 1)}</h4>
+                            <h4 className="card-text col-md-6">Duração: {this.flightService.convertDuration(this.props.flightOffer.itineraries[1].duration)}</h4>
+                        </div>
                     </div>
+                    }
+
                     <div hidden={!this.props.flightOffer.pricingOptions.includedCheckedBagsOnly}>
                         <h3 className="card-text mt-2">Bagagem</h3>
                         <div className="row">
