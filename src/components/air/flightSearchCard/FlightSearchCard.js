@@ -16,8 +16,38 @@ class FlightSearchCard extends React.Component {
             destination: '',
             passenger: 1,
             oneWay: false
-        }
+        },
+        searchButtonEnabled: false
     };
+
+    validateSearchObject = (searchObject) => {
+        let isValid = true
+
+        Object.keys(searchObject).forEach(fieldName => {
+            switch (fieldName) {
+                case 'origin':
+                    let origin = searchObject.origin
+                    if (origin.length < 3) isValid = false
+                    break
+                case 'destination':
+                    let destination = searchObject.destination
+                    if (destination.length < 3) isValid = false
+                    break
+                case 'departureDate':
+                    if (!searchObject.departureDate) isValid = false
+                    break
+                case 'returnDate':
+                    if (!searchObject.oneWay && !searchObject.returnDate) isValid = false
+            }
+        })
+
+        if (isValid) {
+            this.setState({searchButtonEnabled: true})
+        } else {
+            this.setState({searchButtonEnabled: false})
+        }
+        this.setState({searchObject})
+    }
 
     handleDepartureDateChange = (date) => {
         let searchObject = this.state.searchObject
@@ -27,13 +57,13 @@ class FlightSearchCard extends React.Component {
             searchObject.returnDate = undefined
         }
 
-        this.setState({searchObject});
+        this.validateSearchObject(searchObject);
     };
 
     handleReturnDateChange = (date) => {
         let searchObject = this.state.searchObject
         searchObject.returnDate = date
-        this.setState({searchObject});
+        this.validateSearchObject(searchObject);
     };
 
     decrementValue = (event) => {
@@ -46,7 +76,7 @@ class FlightSearchCard extends React.Component {
         } else {
             searchObject.passenger = 1
         }
-        this.setState({searchObject});
+        this.validateSearchObject(searchObject);
     }
 
     incrementValue = (event) => {
@@ -63,7 +93,7 @@ class FlightSearchCard extends React.Component {
         } else {
             searchObject.passenger = 0
         }
-        this.setState({searchObject});
+        this.validateSearchObject(searchObject);
     }
 
     radioButtonChanged = (event) => {
@@ -78,7 +108,7 @@ class FlightSearchCard extends React.Component {
                 searchObject.returnDate = undefined
                 break;
         }
-        this.setState({searchObject});
+        this.validateSearchObject(searchObject);
     }
 
     onTextChange = (event) => {
@@ -87,7 +117,7 @@ class FlightSearchCard extends React.Component {
 
         let searchObject = this.state.searchObject
         searchObject[name] = value
-        this.setState({searchObject})
+        this.validateSearchObject(searchObject);
     }
 
     onClassChanged = (event) => {
@@ -109,7 +139,7 @@ class FlightSearchCard extends React.Component {
                 break;
         }
 
-        this.setState({searchObject})
+        this.validateSearchObject(searchObject);
     }
 
     onClick = () => {
@@ -222,7 +252,12 @@ class FlightSearchCard extends React.Component {
                     <div className="row">
                         <div className="col-md-3 input-icons">
                             <i className="fas fa-search icon-white"/>
-                            <button type="submit" className="btn btn-danger button" onClick={this.onClick}>Procurar</button>
+                            <button type="submit"
+                                    className="btn btn-danger button"
+                                    onClick={this.onClick}
+                                    disabled={!this.state.searchButtonEnabled}>
+                                Procurar
+                            </button>
                         </div>
                     </div>
                 </div>
