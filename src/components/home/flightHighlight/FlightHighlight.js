@@ -1,6 +1,5 @@
 import React from "react";
 import Loader from "react-loader-spinner";
-import moment from "moment";
 
 import FlightService from "../../../app/FlightService";
 
