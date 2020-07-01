@@ -32,7 +32,7 @@ class FlightSearchCard extends React.Component {
 
     decrementValue = (event) => {
         event.preventDefault();
-        let currentVal = this.state.passenger
+        let currentVal = this.state.searchObject.passenger
 
         if (!isNaN(currentVal) && currentVal > 0) {
             let searchObject = this.state.searchObject
@@ -47,7 +47,7 @@ class FlightSearchCard extends React.Component {
 
     incrementValue = (event) => {
         event.preventDefault();
-        let currentVal = this.state.passenger
+        let currentVal = this.state.searchObject.passenger
 
         if (!isNaN(currentVal)) {
             let searchObject = this.state.searchObject
