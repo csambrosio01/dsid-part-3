@@ -111,9 +111,9 @@ class FlightSearchCard extends React.Component {
         this.validateSearchObject(searchObject);
     }
 
-    onTextChange = (event) => {
+    onTextChange = (event, value) => {
         event.preventDefault()
-        const {name, value} = event.target
+        const name = event.target.name
 
         let searchObject = this.state.searchObject
         searchObject[name] = value

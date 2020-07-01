@@ -22,7 +22,13 @@ class SearchInput extends React.Component {
             this.setState({options: []})
         }
 
-        this.props.onTextChange(event)
+        let valueCode = value.length > 3 ? value.slice(0, 3) : value
+        this.state.options.forEach(option => {
+            if (option.name === value) {
+                valueCode = option.iataCode
+            }
+        })
+        this.props.onTextChange(event, valueCode)
     }
 
     render() {
