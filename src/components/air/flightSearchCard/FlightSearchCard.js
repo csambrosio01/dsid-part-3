@@ -9,7 +9,8 @@ class FlightSearchCard extends React.Component {
         returnDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         passenger: 1,
         travelClass: ['Econômica', 'Econômica premium', 'Business', 'Primeira classe'],
-        searchObject: {}
+        searchObject: {},
+        oneWay: false
     };
 
     handleDepartureDateChange = (date) => {
@@ -46,8 +47,17 @@ class FlightSearchCard extends React.Component {
         }
     }
 
-    onChange = (event) => {
+    radioButtonChanged = (event) => {
+        const {name, value} = event.target;
 
+        switch (true) {
+            case (name === 'oneWayFalse' && value === 'on'):
+                this.setState({oneWay: false})
+                break;
+            case (name === 'oneWayTrue' && value === 'on'):
+                this.setState({oneWay: true})
+                break;
+        }
     }
 
     render() {
@@ -58,15 +68,21 @@ class FlightSearchCard extends React.Component {
                     <div className="row pb-3">
                         <div className="form-check col-md-2">
                             <label className="form-check-label pl-3">
-                                <input type="radio" className="form-check-input" name="optionsRadios"
-                                       id="optionsRadios1" value="option1" checked onChange={this.onChange}/>
+                                <input type="radio"
+                                       name="oneWayFalse"
+                                       className="form-check-input"
+                                       checked={!this.state.oneWay}
+                                       onChange={this.radioButtonChanged}/>
                                 Ida e volta
                             </label>
                         </div>
                         <div className="form-check col-md-2">
                             <label className="form-check-label pl-3">
-                                <input type="radio" className="form-check-input" name="optionsRadios"
-                                       id="optionsRadios2" value="option2"/>
+                                <input type="radio"
+                                       name="oneWayTrue"
+                                       className="form-check-input"
+                                       checked={this.state.oneWay}
+                                       onChange={this.radioButtonChanged}/>
                                 Somente ida
                             </label>
                         </div>
