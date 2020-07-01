@@ -67,7 +67,7 @@ class FlightInfoCard extends React.Component {
                         <h6 className="card-text">Duração do vôo: {this.convertDuration(this.props.flightOffer.itineraries[0].duration)}</h6>
                         <h6 className="card-text">{this.props.flightOffer.oneWay ? 'Apenas ida' : 'Ida e volta'}</h6>
                         <h6 className="card-text">{this.getNumberOfStops(this.props.flightOffer.itineraries[0].segments[0].numberOfStops)}</h6>
-                        <button type="button" className="btn btn-primary">Comprar</button>
+                        <button type="button" className="btn btn-primary" disabled>Comprar</button>
                     </div>
                 </div>
             </div>
