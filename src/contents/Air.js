@@ -35,6 +35,10 @@ class Air extends React.Component {
             })
     }
 
+    onSearchClicked = (searchObject) => {
+        this.flightService.getFlightOrders(searchObject)
+    }
+
     render() {
         return (
             <App>
@@ -45,7 +49,7 @@ class Air extends React.Component {
 
                     <hr className="my-4"/>
 
-                    <FlightSearchCard/>
+                    <FlightSearchCard onSearchCliked={this.onSearchClicked}/>
                 </div>
                 {!this.state.isFlightOffersLoading &&
                 <div className="mb-5">
