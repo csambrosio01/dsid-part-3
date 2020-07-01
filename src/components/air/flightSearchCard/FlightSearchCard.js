@@ -38,6 +38,9 @@ class FlightSearchCard extends React.Component {
                     break
                 case 'returnDate':
                     if (!searchObject.oneWay && !searchObject.returnDate) isValid = false
+                    break
+                default:
+                    break
             }
         })
 
@@ -107,6 +110,8 @@ class FlightSearchCard extends React.Component {
                 searchObject.oneWay = true
                 searchObject.returnDate = undefined
                 break;
+            default:
+                break;
         }
         this.validateSearchObject(searchObject);
     }
@@ -136,6 +141,8 @@ class FlightSearchCard extends React.Component {
                 break;
             case 'Primeira Classe':
                 searchObject.travelClass = 'FIRST'
+                break;
+            default:
                 break;
         }
 
