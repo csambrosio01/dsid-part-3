@@ -10,7 +10,7 @@ class Air extends React.Component {
     state = {
         flightHighlightOffers: [],
         flightSearchOffers: [],
-        isFlightOffersLoading: false,
+        isFlightHighlightOffersLoading: false,
         hasSearched: false
     }
 
@@ -82,7 +82,7 @@ class Air extends React.Component {
                 </div>
                 <hr className="my-4" hidden={!this.state.hasSearched}/>
                 <div>
-                    {!this.state.isFlightOffersLoading &&
+                    {!this.state.isFlightHighlightOffersLoading &&
                     <div className="mb-5">
                         <div className="row mb-3">
                             <div className="col-md-12">
@@ -99,7 +99,7 @@ class Air extends React.Component {
                         </div>
                     </div>
                     }
-                    {this.state.isFlightOffersLoading &&
+                    {this.state.isFlightHighlightOffersLoading &&
                     <div className="col-md-12 d-flex justify-content-center mb-5">
                         <Loader type="Oval" color="Blue" height={100} width={100}/>
                     </div>
