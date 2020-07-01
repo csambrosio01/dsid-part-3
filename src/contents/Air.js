@@ -11,6 +11,7 @@ class Air extends React.Component {
         flightHighlightOffers: [],
         flightSearchOffers: [],
         isFlightHighlightOffersLoading: false,
+        isFlightSearchOffersLoading: false,
         hasSearched: false
     }
 
@@ -38,7 +39,10 @@ class Air extends React.Component {
     }
 
     onSearchClicked = (searchObject) => {
-        this.setState({hasSearched: true})
+        this.setState({
+            hasSearched: true,
+            isFlightSearchOffersLoading: true
+        })
         this.flightService.getFlightOrders(searchObject)
             .then(response => {
                 let flightHighlightOffers = this.state.flightHighlightOffers
@@ -47,8 +51,12 @@ class Air extends React.Component {
                 }
                 this.setState({
                     flightHighlightOffers: flightHighlightOffers,
-                    flightSearchOffers: response.data
+                    flightSearchOffers: response.data,
+                    isFlightSearchOffersLoading: false
                 })
+            })
+            .catch(() => {
+                this.setState({isFlightSearchOffersLoading: false})
             })
     }
 
@@ -65,7 +73,7 @@ class Air extends React.Component {
                     <FlightSearchCard onSearchCliked={this.onSearchClicked}/>
                 </div>
                 <div>
-                    {(this.state.hasSearched && this.state.flightSearchOffers.length > 0) &&
+                    {(this.state.hasSearched && !this.state.isFlightSearchOffersLoading) &&
                     <div>
                         <div className="row mb-3">
                             <div className="col-md-12">
@@ -74,7 +82,7 @@ class Air extends React.Component {
                         </div>
                     </div>
                     }
-                    {(this.state.hasSearched && this.state.flightSearchOffers.length === 0) &&
+                    {(this.state.hasSearched && this.state.isFlightSearchOffersLoading) &&
                     <div className="col-md-12 d-flex justify-content-center mb-5">
                         <Loader type="Oval" color="Blue" height={100} width={100}/>
                     </div>
