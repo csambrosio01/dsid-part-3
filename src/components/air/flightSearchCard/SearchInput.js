@@ -21,6 +21,8 @@ class SearchInput extends React.Component {
         } else {
             this.setState({options: []})
         }
+
+        this.props.onTextChange(event)
     }
 
     render() {
@@ -30,6 +32,7 @@ class SearchInput extends React.Component {
                 <input
                     className="input-field"
                     type="search"
+                    name={this.props.name}
                     list={this.props.placeholder}
                     onChange={this.onTextChange}
                     placeholder={this.props.placeholder}/>

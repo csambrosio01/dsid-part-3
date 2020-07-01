@@ -74,6 +74,15 @@ class FlightSearchCard extends React.Component {
         this.setState({searchObject});
     }
 
+    onTextChange = (event) => {
+        event.preventDefault()
+        const {name, value} = event.target
+
+        let searchObject = this.state.searchObject
+        searchObject[name] = value
+        this.setState({searchObject})
+    }
+
     onClick = () => {
         this.props.onSearchCliked(this.state.searchObject)
     }
@@ -108,10 +117,16 @@ class FlightSearchCard extends React.Component {
 
                     <div className="row pb-3">
                         <div className="col-md-6">
-                            <SearchInput icon="fas fa-plane-departure icon" placeholder="Origem"/>
+                            <SearchInput icon="fas fa-plane-departure icon"
+                                         placeholder="Origem"
+                                         name="origin"
+                                         onTextChange={this.onTextChange}/>
                         </div>
                         <div className="col-md-6">
-                            <SearchInput icon="fas fa-plane-arrival icon" placeholder="Destino"/>
+                            <SearchInput icon="fas fa-plane-arrival icon"
+                                         placeholder="Destino"
+                                         name="destination"
+                                         onTextChange={this.onTextChange}/>
                         </div>
                     </div>
                     <div className="row pb-3">
