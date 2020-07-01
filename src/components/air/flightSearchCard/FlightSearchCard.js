@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import SearchInput from "./SearchInput";
 import './flightSearchCard.css'
 
-const travelClasses = ['Econômica', 'Econômica premium', 'Bussiness', 'Primeira Classe']
+const travelClasses = ['Econômica', 'Econômica Premium', 'Business', 'Primeira Classe']
 
 class FlightSearchCard extends React.Component {
     state = {
