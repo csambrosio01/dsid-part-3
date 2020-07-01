@@ -22,6 +22,11 @@ class FlightSearchCard extends React.Component {
     handleDepartureDateChange = (date) => {
         let searchObject = this.state.searchObject
         searchObject.departureDate = date
+
+        if (searchObject.departureDate > searchObject.returnDate) {
+            searchObject.returnDate = undefined
+        }
+
         this.setState({searchObject});
     };
 
@@ -165,6 +170,7 @@ class FlightSearchCard extends React.Component {
                                 <DatePicker
                                     className="input-field"
                                     dateFormat="dd/MM/yyyy"
+                                    minDate={new Date()}
                                     selected={this.state.searchObject.departureDate}
                                     onChange={this.handleDepartureDateChange}/>
                             </div>
@@ -180,6 +186,7 @@ class FlightSearchCard extends React.Component {
                                 <DatePicker
                                     className="input-field"
                                     dateFormat="dd/MM/yyyy"
+                                    minDate={new Date(this.state.searchObject.departureDate + oneDayInMillis)}
                                     selected={this.state.searchObject.returnDate}
                                     onChange={this.handleReturnDateChange}/>
                             </div>
