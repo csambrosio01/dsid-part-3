@@ -24,16 +24,16 @@ class Air extends React.Component {
     }
 
     getFlightOffersHighlights = () => {
-        this.setState({isFlightOffersLoading: true})
+        this.setState({isFlightHighlightOffersLoading: true})
         this.flightService.getFlightOffersHighlightsAirPage()
             .then(response => {
                 this.setState({
                     flightHighlightOffers: response.data,
-                    isFlightOffersLoading: false
+                    isFlightHighlightOffersLoading: false
                 })
             })
             .catch(() => {
-                this.setState({isFlightOffersLoading: false})
+                this.setState({isFlightHighlightOffersLoading: false})
             })
     }
 
