@@ -8,8 +8,10 @@ import FlightInfoCard from "../components/air/flightInfoCard/FlightInfoCard";
 
 class Air extends React.Component {
     state = {
-        flightOffers: [],
-        isFlightOffersLoading: false
+        flightHighlightOffers: [],
+        flightSearchOffers: [],
+        isFlightOffersLoading: false,
+        hasSearched: false
     }
 
     constructor(props) {
@@ -26,7 +28,7 @@ class Air extends React.Component {
         this.flightService.getFlightOffersHighlightsAirPage()
             .then(response => {
                 this.setState({
-                    flightOffers: response.data,
+                    flightHighlightOffers: response.data,
                     isFlightOffersLoading: false
                 })
             })
@@ -36,7 +38,18 @@ class Air extends React.Component {
     }
 
     onSearchClicked = (searchObject) => {
+        this.setState({hasSearched: true})
         this.flightService.getFlightOrders(searchObject)
+            .then(response => {
+                let flightHighlightOffers = this.state.flightHighlightOffers
+                if (flightHighlightOffers.length > 3) {
+                    flightHighlightOffers = flightHighlightOffers.slice(0, 3)
+                }
+                this.setState({
+                    flightHighlightOffers: flightHighlightOffers,
+                    flightSearchOffers: response.data
+                })
+            })
     }
 
     render() {
@@ -52,6 +65,23 @@ class Air extends React.Component {
                     <FlightSearchCard onSearchCliked={this.onSearchClicked}/>
                 </div>
                 <div>
+                    {(this.state.hasSearched && this.state.flightSearchOffers.length > 0) &&
+                    <div>
+                        <div className="row mb-3">
+                            <div className="col-md-12">
+                                <h2>Sua busca</h2>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    {(this.state.hasSearched && this.state.flightSearchOffers.length === 0) &&
+                    <div className="col-md-12 d-flex justify-content-center mb-5">
+                        <Loader type="Oval" color="Blue" height={100} width={100}/>
+                    </div>
+                    }
+                </div>
+                <hr className="my-4" hidden={!this.state.hasSearched}/>
+                <div>
                     {!this.state.isFlightOffersLoading &&
                     <div className="mb-5">
                         <div className="row mb-3">
@@ -61,7 +91,7 @@ class Air extends React.Component {
                         </div>
                         <div className="row">
 
-                            {this.state.flightOffers.map(flightOffer => {
+                            {this.state.flightHighlightOffers.map(flightOffer => {
                                 return (
                                     <FlightInfoCard flightOffer={flightOffer}/>
                                 )
