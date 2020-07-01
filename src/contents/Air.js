@@ -51,28 +51,30 @@ class Air extends React.Component {
 
                     <FlightSearchCard onSearchCliked={this.onSearchClicked}/>
                 </div>
-                {!this.state.isFlightOffersLoading &&
-                <div className="mb-5">
-                    <div className="row mb-3">
-                        <div className="col-md-12">
-                            <h2>Principais ofertas de passagens</h2>
+                <div>
+                    {!this.state.isFlightOffersLoading &&
+                    <div className="mb-5">
+                        <div className="row mb-3">
+                            <div className="col-md-12">
+                                <h2>Principais ofertas de passagens</h2>
+                            </div>
+                        </div>
+                        <div className="row">
+
+                            {this.state.flightOffers.map(flightOffer => {
+                                return (
+                                    <FlightInfoCard flightOffer={flightOffer}/>
+                                )
+                            })}
                         </div>
                     </div>
-                    <div className="row">
-
-                        {this.state.flightOffers.map(flightOffer => {
-                            return (
-                                <FlightInfoCard flightOffer={flightOffer}/>
-                            )
-                        })}
+                    }
+                    {this.state.isFlightOffersLoading &&
+                    <div className="col-md-12 d-flex justify-content-center mb-5">
+                        <Loader type="Oval" color="Blue" height={100} width={100}/>
                     </div>
+                    }
                 </div>
-                }
-                {this.state.isFlightOffersLoading &&
-                <div className="col-md-12 d-flex justify-content-center mb-5">
-                    <Loader type="Oval" color="Blue" height={100} width={100}/>
-                </div>
-                }
             </App>
         )
     }
