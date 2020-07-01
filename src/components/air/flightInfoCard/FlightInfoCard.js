@@ -1,6 +1,13 @@
 import React from "react";
+import FlightService from "../../../app/FlightService";
 
 class FlightInfoCard extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.flightService = new FlightService()
+    }
+
     render() {
         return (
             <div className="col-md-4">
