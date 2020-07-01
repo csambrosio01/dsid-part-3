@@ -33,31 +33,31 @@ class FlightSearchCard extends React.Component {
     decrementValue = (event) => {
         event.preventDefault();
         let currentVal = this.state.searchObject.passenger
+        let searchObject = this.state.searchObject
 
-        if (!isNaN(currentVal) && currentVal > 0) {
-            let searchObject = this.state.searchObject
+        if (!isNaN(currentVal) && currentVal > 1) {
             searchObject.passenger = currentVal - 1
-            this.setState({searchObject});
         } else {
-            let searchObject = this.state.searchObject
-            searchObject.passenger = 0
-            this.setState({searchObject});
+            searchObject.passenger = 1
         }
+        this.setState({searchObject});
     }
 
     incrementValue = (event) => {
         event.preventDefault();
         let currentVal = this.state.searchObject.passenger
+        let searchObject = this.state.searchObject
 
         if (!isNaN(currentVal)) {
-            let searchObject = this.state.searchObject
-            searchObject.passenger = currentVal + 1
-            this.setState({searchObject});
+            if (currentVal < 9) {
+                searchObject.passenger = currentVal + 1
+            } else {
+                searchObject.passenger = 9
+            }
         } else {
-            let searchObject = this.state.searchObject
             searchObject.passenger = 0
-            this.setState({searchObject});
         }
+        this.setState({searchObject});
     }
 
     radioButtonChanged = (event) => {
