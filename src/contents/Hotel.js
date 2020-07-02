@@ -30,7 +30,7 @@ class Hotel extends React.Component {
         this.hotelService.getHotelOffersHighlightsHotelPage()
             .then(response => {
                 this.setState({
-                    hotelHighlightsOffers: response.data,
+                    hotelHighlightsOffers: response.data.slice(0,6),
                     isHotelHighlightOffersLoading: false
                 })
             })
