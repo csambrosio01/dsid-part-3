@@ -44,7 +44,7 @@ class Air extends React.Component {
             hasSearched: true,
             isFlightSearchOffersLoading: true
         })
-        this.flightService.getFlightOrders(searchObject)
+        this.flightService.getFlightOffers(searchObject)
             .then(response => {
                 let flightHighlightOffers = this.state.flightHighlightOffers
                 if (flightHighlightOffers.length > 3) {

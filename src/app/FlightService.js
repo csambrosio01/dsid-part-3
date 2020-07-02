@@ -2,7 +2,7 @@ import Api from "../api/Api";
 import moment from "moment";
 
 class FlightService {
-    getFlightOrders = (searchObject) => {
+    getFlightOffers = (searchObject) => {
 
         let flight = {
             originLocationCode: searchObject.origin,
