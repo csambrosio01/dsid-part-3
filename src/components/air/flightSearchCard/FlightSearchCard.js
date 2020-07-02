@@ -94,7 +94,7 @@ class FlightSearchCard extends React.Component {
                 searchObject.passenger = 9
             }
         } else {
-            searchObject.passenger = 0
+            searchObject.passenger = 1
         }
         this.validateSearchObject(searchObject);
     }

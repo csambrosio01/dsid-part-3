@@ -28,7 +28,6 @@ class FlightSearchInfoCard extends React.Component {
     }
 
     checkOneWay = () => {
-        debugger
         return this.props.flightOffer.itineraries.length === 1
     }
 
