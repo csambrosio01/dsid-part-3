@@ -72,7 +72,7 @@ class Home extends React.Component {
 
                     <div className="alert alert-danger">
                         <h4 className="alert-heading">Essa não!</h4>
-                        <p>Não conseguimos encontrar nenhuma oferta especial de carros, por favor, tente novamente mais
+                        <p>Não conseguimos encontrar nenhuma oferta especial de carros no momento, por favor, tente novamente mais
                             tarde</p>
                     </div>
                 </React.Fragment>
