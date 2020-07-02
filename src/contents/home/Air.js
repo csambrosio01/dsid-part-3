@@ -6,6 +6,7 @@ import FlightService from "../../app/FlightService";
 import Loader from "react-loader-spinner";
 import FlightInfoCard from "../../components/air/flightInfoCard/FlightInfoCard";
 import FlightSearchInfoCard from "../../components/air/flightSearchInfoCard/FlightSearchInfoCard";
+import Toast from "../../components/toast/Toast";
 
 class Air extends React.Component {
     state = {
@@ -104,7 +105,7 @@ class Air extends React.Component {
                 </div>
                 <hr className="my-4" hidden={!this.state.hasSearched}/>
                 <div>
-                    {!this.state.isFlightHighlightOffersLoading &&
+                    {(!this.state.isFlightHighlightOffersLoading && this.state.flightHighlightOffers.length > 0) &&
                     <div className="mb-5">
                         <div className="row mb-3">
                             <div className="col-md-12">
@@ -120,6 +121,11 @@ class Air extends React.Component {
                             })}
                         </div>
                     </div>
+                    }
+                    {(!this.state.isFlightHighlightOffersLoading && this.state.flightHighlightOffers.length === 0) &&
+                    <Toast timeout={10000}
+                           header={'Essa não!'}
+                           body={'Não conseguimos encontrar nenhuma oferta especial de passagens aéreas no momento, por favor, tente novamente mais tarde'}/>
                     }
                     {this.state.isFlightHighlightOffersLoading &&
                     <div className="col-md-12 d-flex justify-content-center mb-5">
