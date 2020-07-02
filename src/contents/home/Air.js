@@ -1,11 +1,11 @@
 import React from 'react'
 
-import App from "../containers/App";
-import FlightSearchCard from "../components/air/flightSearchCard/FlightSearchCard";
-import FlightService from "../app/FlightService";
+import App from "../../containers/App";
+import FlightSearchCard from "../../components/air/flightSearchCard/FlightSearchCard";
+import FlightService from "../../app/FlightService";
 import Loader from "react-loader-spinner";
-import FlightInfoCard from "../components/air/flightInfoCard/FlightInfoCard";
-import FlightSearchInfoCard from "../components/air/flightSearchInfoCard/FlightSearchInfoCard";
+import FlightInfoCard from "../../components/air/flightInfoCard/FlightInfoCard";
+import FlightSearchInfoCard from "../../components/air/flightSearchInfoCard/FlightSearchInfoCard";
 
 class Air extends React.Component {
     state = {

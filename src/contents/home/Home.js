@@ -1,10 +1,10 @@
 import React from 'react'
 
-import App from "../containers/App";
-import FlightHighlight from "../components/home/flightHighlight/FlightHighlight";
-import HotelHighlight from "../components/home/hotelHighlight/HotelHighlight";
-import HotelService from "../app/HotelService";
-import FlightService from "../app/FlightService";
+import App from "../../containers/App";
+import FlightHighlight from "../../components/home/flightHighlight/FlightHighlight";
+import HotelHighlight from "../../components/home/hotelHighlight/HotelHighlight";
+import HotelService from "../../app/HotelService";
+import FlightService from "../../app/FlightService";
 import Loader from "react-loader-spinner";
 
 class Home extends React.Component {

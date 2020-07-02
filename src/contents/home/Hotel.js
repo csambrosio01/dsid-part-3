@@ -1,11 +1,11 @@
 import React from 'react'
 
-import App from "../containers/App";
-import HotelSearchCard from "../components/hotel/hotelSearchCard/HotelSearchCard";
-import HotelService from "../app/HotelService";
+import App from "../../containers/App";
+import HotelSearchCard from "../../components/hotel/hotelSearchCard/HotelSearchCard";
+import HotelService from "../../app/HotelService";
 import Loader from "react-loader-spinner";
-import HotelSearchInfoCard from "../components/hotel/hotelSearchInfoCard/HotelSearchInfoCard";
-import HotelInfoCard from "../components/hotel/hotelInfoCard/HotelInfoCard";
+import HotelSearchInfoCard from "../../components/hotel/hotelSearchInfoCard/HotelSearchInfoCard";
+import HotelInfoCard from "../../components/hotel/hotelInfoCard/HotelInfoCard";
 
 class Hotel extends React.Component {
     state = {

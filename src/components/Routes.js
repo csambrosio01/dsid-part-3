@@ -1,10 +1,10 @@
 import React from "react";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 
-import Air from "../contents/Air";
-import CarRental from "../contents/CarRental";
-import Hotel from "../contents/Hotel";
-import Home from "../contents/Home";
+import Air from "../contents/home/Air";
+import CarRental from "../contents/home/CarRental";
+import Hotel from "../contents/home/Hotel";
+import Home from "../contents/home/Home";
 import CreateUser from "../contents/user/CreateUser";
 import Login from "../contents/user/Login";
 
