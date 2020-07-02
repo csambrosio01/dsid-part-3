@@ -16,7 +16,6 @@ class HotelSearchCard extends React.Component {
             checkOutDate:new Date(Date.now() + 7 * oneDayInMillis),
             roomQuantity: 1,
             adults: 1,
-            radius: 20,
             rating: 5,
             priceRange: {
                 min: 100,
@@ -94,7 +93,7 @@ class HotelSearchCard extends React.Component {
     }
 
     onClick = () => {
-        this.props.onSearchCliked(this.state.searchObject)
+        this.props.onSearchClicked(this.state.searchObject)
     }
 
     render() {
