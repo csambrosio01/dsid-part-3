@@ -1,0 +1,49 @@
+.input-group {
+    clear: both;
+    position: relative;
+}
+
+.input-group input[type='button'] {
+    background-color: #eeeeee;
+    min-width: 38px;
+    width: auto;
+    transition: all 300ms ease;
+}
+
+.input-group .button-minus {
+    font-weight: bold;
+    height: 46px;
+    padding: 0;
+    width: 38px;
+    position: relative;
+    border-radius: 10px 0 0 10px;
+}
+.input-group .button-plus {
+    font-weight: bold;
+    height: 46px;
+    padding: 0;
+    width: 38px;
+    position: relative;
+    border-radius: 0 10px 10px 0;
+}
+
+.input-group .quantity-field {
+    position: relative;
+    height: 46px;
+    left: -6px;
+    text-align: center;
+    width: 62px;
+    display: inline-block;
+    font-size: 15px;
+    margin: 0 0 5px;
+    resize: vertical;
+}
+
+.button-plus {
+    left: -13px;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+}
