@@ -44,7 +44,7 @@ class Air extends React.Component {
             hasSearched: true,
             isFlightSearchOffersLoading: true
         })
-        this.flightService.getFlightOrders(searchObject)
+        this.flightService.getFlightOffers(searchObject)
             .then(response => {
                 let flightHighlightOffers = this.state.flightHighlightOffers
                 if (flightHighlightOffers.length > 3) {
@@ -71,7 +71,7 @@ class Air extends React.Component {
 
                     <hr className="my-4"/>
 
-                    <FlightSearchCard onSearchCliked={this.onSearchClicked}/>
+                    <FlightSearchCard onSearchClicked={this.onSearchClicked}/>
                 </div>
                 <div>
                     {(this.state.hasSearched && !this.state.isFlightSearchOffersLoading) &&
