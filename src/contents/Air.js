@@ -71,7 +71,7 @@ class Air extends React.Component {
 
                     <hr className="my-4"/>
 
-                    <FlightSearchCard onSearchCliked={this.onSearchClicked}/>
+                    <FlightSearchCard onSearchClicked={this.onSearchClicked}/>
                 </div>
                 <div>
                     {(this.state.hasSearched && !this.state.isFlightSearchOffersLoading) &&

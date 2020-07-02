@@ -121,7 +121,7 @@ class FlightSearchCard extends React.Component {
     }
 
     onClick = () => {
-        this.props.onSearchCliked(this.state.searchObject)
+        this.props.onSearchClicked(this.state.searchObject)
     }
 
     render() {
