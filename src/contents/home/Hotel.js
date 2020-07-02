@@ -42,7 +42,8 @@ class Hotel extends React.Component {
     onSearchClicked = (searchObject) => {
         this.setState({
             hasSearched: true,
-            isHotelSearchOffersLoading: true
+            isHotelSearchOffersLoading: true,
+            hotelSearchOffers: []
         })
 
         this.hotelService.getHotelOffers(searchObject)
