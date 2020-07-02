@@ -9,3 +9,7 @@ body {
 .star {
     color: gold;
 }
+
+.card-header-height {
+    min-height: 72px;
+}

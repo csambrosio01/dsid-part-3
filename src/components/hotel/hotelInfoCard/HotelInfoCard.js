@@ -22,7 +22,7 @@ class HotelInfoCard extends React.Component {
         return (
             <div className="col-md-4">
                 <div className="card text-white bg-dark mb-3">
-                    <div className="card-header">
+                    <div className="card-header card-header-height">
                         <h5 className="card-text">
                             {this.stringUtils.capitalize(this.props.hotelOffer.hotel.name)}
                         </h5>
