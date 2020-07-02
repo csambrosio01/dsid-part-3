@@ -75,7 +75,7 @@ class Air extends React.Component {
                     <FlightSearchCard onSearchClicked={this.onSearchClicked}/>
                 </div>
                 <div>
-                    {(this.state.hasSearched && !this.state.isFlightSearchOffersLoading) &&
+                    {(this.state.hasSearched && !this.state.isFlightSearchOffersLoading && this.state.flightSearchOffers.length > 0) &&
                     <div>
                         <div className="row mb-3">
                             <div className="col-md-12">
@@ -88,6 +88,12 @@ class Air extends React.Component {
                             )
                         })}
 
+                    </div>
+                    }
+                    {(this.state.hasSearched && !this.state.isFlightSearchOffersLoading && this.state.flightSearchOffers.length === 0) &&
+                    <div className="alert alert-warning">
+                        <h4 className="alert-heading">Essa não!</h4>
+                        <p>Sua busca não retornou resultados, por favor, altere os campos da busca e tente novamente ou, se preferir, tente novamente mais tarde</p>
                     </div>
                     }
                     {(this.state.hasSearched && this.state.isFlightSearchOffersLoading) &&
