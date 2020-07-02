@@ -27,6 +27,11 @@ class FlightSearchInfoCard extends React.Component {
         return title
     }
 
+    checkOneWay = () => {
+        debugger
+        return this.props.flightOffer.itineraries.length === 1
+    }
+
     render() {
         return (
             <div className="card text-white bg-dark mb-3">
@@ -41,7 +46,7 @@ class FlightSearchInfoCard extends React.Component {
                         <h4 className="card-text col-md-6">{this.flightService.getNumberOfStops(this.props.flightOffer.itineraries[0].segments.length - 1)}</h4>
                         <h4 className="card-text col-md-6">Duração: {this.flightService.convertDuration(this.props.flightOffer.itineraries[0].duration)}</h4>
                     </div>
-                    {this.props.flightOffer.oneWay &&
+                    {!this.checkOneWay() &&
                     <div>
                         <h3 className="card-text mt-2">Volta</h3>
                         <div className="row">
