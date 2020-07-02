@@ -5,6 +5,10 @@ class HotelService {
         return Api.get('/hotel-offers/highlights')
     }
 
+    getHotelOffersHighlightsHotelPage = () => {
+        return Api.get('/hotel-offers/hotel/highlights')
+    }
+
     getHotelOffers = (searchObject) => {
         let ratings = []
         let i
