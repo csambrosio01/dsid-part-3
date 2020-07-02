@@ -42,7 +42,8 @@ class Air extends React.Component {
     onSearchClicked = (searchObject) => {
         this.setState({
             hasSearched: true,
-            isFlightSearchOffersLoading: true
+            isFlightSearchOffersLoading: true,
+            flightSearchOffers: []
         })
         this.flightService.getFlightOffers(searchObject)
             .then(response => {
