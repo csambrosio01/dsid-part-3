@@ -23,13 +23,13 @@ class Home extends React.Component {
 
     componentDidMount() {
         this.getFlightOffersHighlights()
-        this.getHotelOffersHighlights()
     }
 
     getFlightOffersHighlights = () => {
         this.setState({isFlightOffersHighlightLoading: true})
         this.flightService.getFlightOffersHighlights()
             .then(response => {
+                this.getHotelOffersHighlights()
                 this.setState({
                     flightOffers: response.data,
                     isFlightOffersHighlightLoading: false
