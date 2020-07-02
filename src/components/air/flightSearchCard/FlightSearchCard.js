@@ -2,6 +2,7 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import SearchInput from "./SearchInput";
 import './flightSearchCard.css'
+import IncrementDecrementButton from "../../incrementDecrementButton/IncrementDecrementButton";
 
 const travelClasses = ['Econômica', 'Econômica Premium', 'Business', 'Primeira Classe']
 const oneDayInMillis = 24 * 60 * 60 * 1000
@@ -69,36 +70,6 @@ class FlightSearchCard extends React.Component {
         this.validateSearchObject(searchObject);
     };
 
-    decrementValue = (event) => {
-        event.preventDefault();
-        let currentVal = this.state.searchObject.passenger
-        let searchObject = this.state.searchObject
-
-        if (!isNaN(currentVal) && currentVal > 1) {
-            searchObject.passenger = currentVal - 1
-        } else {
-            searchObject.passenger = 1
-        }
-        this.validateSearchObject(searchObject);
-    }
-
-    incrementValue = (event) => {
-        event.preventDefault();
-        let currentVal = this.state.searchObject.passenger
-        let searchObject = this.state.searchObject
-
-        if (!isNaN(currentVal)) {
-            if (currentVal < 9) {
-                searchObject.passenger = currentVal + 1
-            } else {
-                searchObject.passenger = 9
-            }
-        } else {
-            searchObject.passenger = 1
-        }
-        this.validateSearchObject(searchObject);
-    }
-
     radioButtonChanged = (event) => {
         const {name, value} = event.target;
         let searchObject = this.state.searchObject
@@ -116,7 +87,7 @@ class FlightSearchCard extends React.Component {
         this.validateSearchObject(searchObject);
     }
 
-    onTextChange = (event, value) => {
+    onFieldChange = (event, value) => {
         event.preventDefault()
         const name = event.target.name
 
@@ -186,13 +157,13 @@ class FlightSearchCard extends React.Component {
                             <SearchInput icon="fas fa-plane-departure icon"
                                          placeholder="Origem"
                                          name="origin"
-                                         onTextChange={this.onTextChange}/>
+                                         onTextChange={this.onFieldChange}/>
                         </div>
                         <div className="col-md-6">
                             <SearchInput icon="fas fa-plane-arrival icon"
                                          placeholder="Destino"
                                          name="destination"
-                                         onTextChange={this.onTextChange}/>
+                                         onTextChange={this.onFieldChange}/>
                         </div>
                     </div>
                     <div className="row pb-3">
@@ -249,11 +220,10 @@ class FlightSearchCard extends React.Component {
                                     Passageiros
                                 </label>
                             </div>
-                            <div className="input-group">
-                                <input type="button" value="-" className="button-minus" data-field="quantity" onClick={this.decrementValue}/>
-                                <input type="number" step="1" max="10" value={this.state.searchObject.passenger} name="quantity" className="quantity-field" readOnly/>
-                                <input type="button" value="+" className="button-plus" data-field="quantity" onClick={this.incrementValue}/>
-                            </div>
+                            <IncrementDecrementButton name="passenger"
+                                                      minimum={1}
+                                                      maximum={9}
+                                                      updateCounter={this.onFieldChange}/>
                         </div>
                     </div>
                     <div className="row">
