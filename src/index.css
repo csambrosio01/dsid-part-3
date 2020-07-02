@@ -5,3 +5,7 @@ body {
 .min-vh-80 {
     min-height: 80vh;
 }
+
+.star {
+    color: gold;
+}
