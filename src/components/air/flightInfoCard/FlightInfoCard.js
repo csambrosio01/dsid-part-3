@@ -19,9 +19,9 @@ class FlightInfoCard extends React.Component {
                     </div>
                     <div className="card-body">
                         <h4 className="card-title">Por apenas U$ {this.props.flightOffer.price.total}</h4>
-                        <h6 className="card-text">Duração do vôo: {this.flightService.convertDuration(this.props.flightOffer.itineraries[0].duration)}</h6>
-                        <h6 className="card-text">{this.props.flightOffer.oneWay ? 'Apenas ida' : 'Ida e volta'}</h6>
-                        <h6 className="card-text">{this.flightService.getNumberOfStops(this.props.flightOffer.itineraries[0].segments[0].numberOfStops)}</h6>
+                        <h5 className="card-text">Duração do vôo: {this.flightService.convertDuration(this.props.flightOffer.itineraries[0].duration)}</h5>
+                        <h5 className="card-text">{this.props.flightOffer.oneWay ? 'Apenas ida' : 'Ida e volta'}</h5>
+                        <h5 className="card-text">{this.flightService.getNumberOfStops(this.props.flightOffer.itineraries[0].segments[0].numberOfStops)}</h5>
                         <button type="button" className="btn btn-primary" disabled>Comprar</button>
                     </div>
                 </div>
