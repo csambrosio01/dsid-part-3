@@ -65,7 +65,7 @@ class FlightSearchInfoCard extends React.Component {
                     <div hidden={this.props.flightOffer.pricingOptions.includedCheckedBagsOnly}>
                         <h4 className="card-title mt-2">Bagagens não inclusas</h4>
                     </div>
-                    <h4 className="card-title mt-2">Preço por adulto: U$ {this.props.flightOffer.price.total}</h4>
+                    <h4 className="card-title mt-2">Preço por adulto: U$ {this.props.flightOffer.travelerPricings[0].price.total}</h4>
                     <button type="button" className="btn btn-primary" disabled>Comprar</button>
                 </div>
             </div>
