@@ -94,10 +94,10 @@ class Hotel extends React.Component {
                     </div>
                     }
                     {(!this.state.isHotelSearchOffersLoading && this.state.hotelSearchOffers.length === 0) &&
-                    <div className="alert alert-warning">
-                        <h4 className="alert-heading">Essa não!</h4>
-                        <p>Sua busca não retornou resultados, por favor, altere os campos da busca e tente novamente ou, se preferir, tente novamente mais tarde</p>
-                    </div>
+                    <Toast timeout={10000}
+                           id={'hotelSearchToast'}
+                           header={'Essa não!'}
+                           body={'Sua busca não retornou resultados, por favor, altere os campos da busca e tente novamente ou, se preferir, tente novamente mais tarde'}/>
                     }
                     {this.state.isHotelSearchOffersLoading &&
                     <div className="col-md-12 d-flex justify-content-center mb-5">
