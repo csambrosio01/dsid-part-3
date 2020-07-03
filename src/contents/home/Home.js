@@ -45,7 +45,7 @@ class Home extends React.Component {
         this.hotelService.getHotelOffersHighlights()
             .then(response => {
                 this.setState({
-                    hotelOffers: response.data,
+                    hotelOffers: response,
                     isHotelOffersHighlightsLoading: false
                 })
             })
