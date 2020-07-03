@@ -1,18 +1,19 @@
 import React from 'react'
 
-import App from "../containers/App";
-import HotelSearchCard from "../components/hotel/hotelSearchCard/HotelSearchCard";
-import HotelService from "../app/HotelService";
+import App from "../../containers/App";
+import HotelSearchCard from "../../components/hotel/hotelSearchCard/HotelSearchCard";
+import HotelService from "../../app/HotelService";
 import Loader from "react-loader-spinner";
-import HotelSearchInfoCard from "../components/hotel/hotelSearchInfoCard/HotelSearchInfoCard";
-import HotelInfoCard from "../components/hotel/hotelInfoCard/HotelInfoCard";
+import HotelSearchInfoCard from "../../components/hotel/hotelSearchInfoCard/HotelSearchInfoCard";
+import HotelInfoCard from "../../components/hotel/hotelInfoCard/HotelInfoCard";
+import Toast from "../../components/toast/Toast";
 
 class Hotel extends React.Component {
     state = {
         hotelSearchOffers: [],
         hotelHighlightsOffers: [],
         isHotelSearchOffersLoading: false,
-        isHotelHighlightOffersLoading: false,
+        isHotelHighlightOffersLoading: true,
         hasSearched: false
     }
 
@@ -30,7 +31,7 @@ class Hotel extends React.Component {
         this.hotelService.getHotelOffersHighlightsHotelPage()
             .then(response => {
                 this.setState({
-                    hotelHighlightsOffers: response.data.slice(0,6),
+                    hotelHighlightsOffers: response.slice(0,6),
                     isHotelHighlightOffersLoading: false
                 })
             })
@@ -42,7 +43,8 @@ class Hotel extends React.Component {
     onSearchClicked = (searchObject) => {
         this.setState({
             hasSearched: true,
-            isHotelSearchOffersLoading: true
+            isHotelSearchOffersLoading: true,
+            hotelSearchOffers: []
         })
 
         this.hotelService.getHotelOffers(searchObject)
@@ -77,7 +79,7 @@ class Hotel extends React.Component {
                 </div>
                 {this.state.hasSearched &&
                 <div>
-                    {!this.state.isHotelSearchOffersLoading &&
+                    {(!this.state.isHotelSearchOffersLoading && this.state.hotelSearchOffers.length > 0) &&
                     <div>
                         <div className="row mb-3">
                             <div className="col-md-12">
@@ -91,7 +93,13 @@ class Hotel extends React.Component {
                         })}
                     </div>
                     }
-                    {(this.state.hasSearched && this.state.isHotelSearchOffersLoading) &&
+                    {(!this.state.isHotelSearchOffersLoading && this.state.hotelSearchOffers.length === 0) &&
+                    <Toast timeout={10000}
+                           id={'hotelSearchToast'}
+                           header={'Essa não!'}
+                           body={'Sua busca não retornou resultados, por favor, altere os campos da busca e tente novamente ou, se preferir, tente novamente mais tarde'}/>
+                    }
+                    {this.state.isHotelSearchOffersLoading &&
                     <div className="col-md-12 d-flex justify-content-center mb-5">
                         <Loader type="Oval" color="Blue" height={100} width={100}/>
                     </div>
@@ -100,7 +108,7 @@ class Hotel extends React.Component {
                 }
                 <hr className="my-4" hidden={!this.state.hasSearched}/>
                 <div>
-                    {!this.state.isHotelHighlightOffersLoading &&
+                    {(!this.state.isHotelHighlightOffersLoading && this.state.hotelHighlightsOffers.length > 0) &&
                     <div className="mb-5">
                         <div className="row mb-3">
                             <div className="col-md-12">
@@ -115,6 +123,12 @@ class Hotel extends React.Component {
                             })}
                         </div>
                     </div>
+                    }
+                    {(!this.state.isHotelHighlightOffersLoading && this.state.hotelHighlightsOffers.length === 0) &&
+                    <Toast timeout={10000}
+                           id={'hotelHighlightToast'}
+                           header={'Essa não!'}
+                           body={'Não conseguimos encontrar nenhuma oferta especial de hotéis no momento, por favor, tente novamente mais tarde'}/>
                     }
                     {this.state.isHotelHighlightOffersLoading &&
                     <div className="col-md-12 d-flex justify-content-center mb-5">

@@ -1,10 +1,10 @@
 import React from 'react'
 
-import App from "../containers/App";
-import FlightHighlight from "../components/home/flightHighlight/FlightHighlight";
-import HotelHighlight from "../components/home/hotelHighlight/HotelHighlight";
-import HotelService from "../app/HotelService";
-import FlightService from "../app/FlightService";
+import App from "../../containers/App";
+import FlightHighlight from "../../components/home/flightHighlight/FlightHighlight";
+import HotelHighlight from "../../components/home/hotelHighlight/HotelHighlight";
+import HotelService from "../../app/HotelService";
+import FlightService from "../../app/FlightService";
 import Loader from "react-loader-spinner";
 
 class Home extends React.Component {
@@ -23,13 +23,13 @@ class Home extends React.Component {
 
     componentDidMount() {
         this.getFlightOffersHighlights()
-        this.getHotelOffersHighlights()
     }
 
     getFlightOffersHighlights = () => {
         this.setState({isFlightOffersHighlightLoading: true})
         this.flightService.getFlightOffersHighlights()
             .then(response => {
+                this.getHotelOffersHighlights()
                 this.setState({
                     flightOffers: response.data,
                     isFlightOffersHighlightLoading: false
@@ -45,7 +45,7 @@ class Home extends React.Component {
         this.hotelService.getHotelOffersHighlights()
             .then(response => {
                 this.setState({
-                    hotelOffers: response.data,
+                    hotelOffers: response,
                     isHotelOffersHighlightsLoading: false
                 })
             })
@@ -69,6 +69,12 @@ class Home extends React.Component {
                     <HotelHighlight hotelOffers={this.state.hotelOffers}/>
 
                     <h2>Carros</h2>
+
+                    <div className="alert alert-danger">
+                        <h4 className="alert-heading">Essa não!</h4>
+                        <p>Não conseguimos encontrar nenhuma oferta especial de carros no momento, por favor, tente novamente mais
+                            tarde</p>
+                    </div>
                 </React.Fragment>
                 }
                 {(this.state.isFlightOffersHighlightLoading ||

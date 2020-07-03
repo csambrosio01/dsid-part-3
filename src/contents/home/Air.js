@@ -1,17 +1,18 @@
 import React from 'react'
 
-import App from "../containers/App";
-import FlightSearchCard from "../components/air/flightSearchCard/FlightSearchCard";
-import FlightService from "../app/FlightService";
+import App from "../../containers/App";
+import FlightSearchCard from "../../components/air/flightSearchCard/FlightSearchCard";
+import FlightService from "../../app/FlightService";
 import Loader from "react-loader-spinner";
-import FlightInfoCard from "../components/air/flightInfoCard/FlightInfoCard";
-import FlightSearchInfoCard from "../components/air/flightSearchInfoCard/FlightSearchInfoCard";
+import FlightInfoCard from "../../components/air/flightInfoCard/FlightInfoCard";
+import FlightSearchInfoCard from "../../components/air/flightSearchInfoCard/FlightSearchInfoCard";
+import Toast from "../../components/toast/Toast";
 
 class Air extends React.Component {
     state = {
         flightHighlightOffers: [],
         flightSearchOffers: [],
-        isFlightHighlightOffersLoading: false,
+        isFlightHighlightOffersLoading: true,
         isFlightSearchOffersLoading: false,
         hasSearched: false
     }
@@ -42,7 +43,8 @@ class Air extends React.Component {
     onSearchClicked = (searchObject) => {
         this.setState({
             hasSearched: true,
-            isFlightSearchOffersLoading: true
+            isFlightSearchOffersLoading: true,
+            flightSearchOffers: []
         })
         this.flightService.getFlightOffers(searchObject)
             .then(response => {
@@ -74,7 +76,7 @@ class Air extends React.Component {
                     <FlightSearchCard onSearchClicked={this.onSearchClicked}/>
                 </div>
                 <div>
-                    {(this.state.hasSearched && !this.state.isFlightSearchOffersLoading) &&
+                    {(this.state.hasSearched && !this.state.isFlightSearchOffersLoading && this.state.flightSearchOffers.length > 0) &&
                     <div>
                         <div className="row mb-3">
                             <div className="col-md-12">
@@ -89,6 +91,12 @@ class Air extends React.Component {
 
                     </div>
                     }
+                    {(this.state.hasSearched && !this.state.isFlightSearchOffersLoading && this.state.flightSearchOffers.length === 0) &&
+                    <Toast timeout={10000}
+                           id={'airSearchToast'}
+                           header={'Essa não!'}
+                           body={'Sua busca não retornou resultados, por favor, altere os campos da busca e tente novamente ou, se preferir, tente novamente mais tarde'}/>
+                    }
                     {(this.state.hasSearched && this.state.isFlightSearchOffersLoading) &&
                     <div className="col-md-12 d-flex justify-content-center mb-5">
                         <Loader type="Oval" color="Blue" height={100} width={100}/>
@@ -97,7 +105,7 @@ class Air extends React.Component {
                 </div>
                 <hr className="my-4" hidden={!this.state.hasSearched}/>
                 <div>
-                    {!this.state.isFlightHighlightOffersLoading &&
+                    {(!this.state.isFlightHighlightOffersLoading && this.state.flightHighlightOffers.length > 0) &&
                     <div className="mb-5">
                         <div className="row mb-3">
                             <div className="col-md-12">
@@ -113,6 +121,12 @@ class Air extends React.Component {
                             })}
                         </div>
                     </div>
+                    }
+                    {(!this.state.isFlightHighlightOffersLoading && this.state.flightHighlightOffers.length === 0) &&
+                    <Toast timeout={10000}
+                           id={'airSearchToast'}
+                           header={'Essa não!'}
+                           body={'Não conseguimos encontrar nenhuma oferta especial de passagens aéreas no momento, por favor, tente novamente mais tarde'}/>
                     }
                     {this.state.isFlightHighlightOffersLoading &&
                     <div className="col-md-12 d-flex justify-content-center mb-5">
