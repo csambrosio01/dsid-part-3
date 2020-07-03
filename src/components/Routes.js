@@ -2,7 +2,6 @@ import React from "react";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 
 import Air from "../contents/home/Air";
-import CarRental from "../contents/home/CarRental";
 import Hotel from "../contents/home/Hotel";
 import Home from "../contents/home/Home";
 import CreateUser from "../contents/user/CreateUser";
