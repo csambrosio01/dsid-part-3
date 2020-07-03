@@ -128,7 +128,7 @@ class FlightSearchCard extends React.Component {
         return (
             <div className="card text-white bg-dark mb-3">
                 <div className="card-body">
-                    <h3 className="card-title">Busque aqui sua passagem aérea (apenas Europa e América do Norte)</h3>
+                    <h3 className="card-title">Busque aqui sua passagem aérea</h3>
                     <div className="row pb-3">
                         <div className="form-check col-md-2">
                             <label className="form-check-label pl-3">
