@@ -6,6 +6,7 @@ import HotelService from "../../app/HotelService";
 import Loader from "react-loader-spinner";
 import HotelSearchInfoCard from "../../components/hotel/hotelSearchInfoCard/HotelSearchInfoCard";
 import HotelInfoCard from "../../components/hotel/hotelInfoCard/HotelInfoCard";
+import Toast from "../../components/toast/Toast";
 
 class Hotel extends React.Component {
     state = {
@@ -107,7 +108,7 @@ class Hotel extends React.Component {
                 }
                 <hr className="my-4" hidden={!this.state.hasSearched}/>
                 <div>
-                    {!this.state.isHotelHighlightOffersLoading &&
+                    {(!this.state.isHotelHighlightOffersLoading && this.state.hotelHighlightsOffers.length > 0) &&
                     <div className="mb-5">
                         <div className="row mb-3">
                             <div className="col-md-12">
@@ -122,6 +123,11 @@ class Hotel extends React.Component {
                             })}
                         </div>
                     </div>
+                    }
+                    {(!this.state.isHotelHighlightOffersLoading && this.state.hotelHighlightsOffers.length === 0) &&
+                    <Toast timeout={10000}
+                           header={'Essa não!'}
+                           body={'Não conseguimos encontrar nenhuma oferta especial de hotéis no momento, por favor, tente novamente mais tarde'}/>
                     }
                     {this.state.isHotelHighlightOffersLoading &&
                     <div className="col-md-12 d-flex justify-content-center mb-5">
