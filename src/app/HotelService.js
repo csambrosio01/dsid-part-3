@@ -1,8 +1,70 @@
 import Api from "../api/Api";
 
+const oneDayInMillis = 24 * 60 * 60 * 1000
+
 class HotelService {
+    shuffle = (array) => {
+        let currentIndex = array.length;
+        let temporaryValue, randomIndex;
+
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    };
+
     getHotelOffersHighlights = () => {
-        return Api.get('/hotel-offers/highlights')
+        let hotelOfferRequestLAX = {
+            cityCode: 'LAX',
+            checkInDate: new Date(Date.now() + oneDayInMillis).toISOString().split('T')[0],
+            checkOutDate: new Date(Date.now() + 2 * oneDayInMillis).toISOString().split('T')[0],
+            roomQuantity: 1,
+            adults: 1,
+            radius: 20,
+            ratings: [2,3,4,5],
+            priceRange: '100-1000'
+        }
+
+        let hotelOfferRequestPAR = {
+            cityCode: 'PAR',
+            checkInDate: new Date(Date.now() + oneDayInMillis).toISOString().split('T')[0],
+            checkOutDate: new Date(Date.now() + 2 * oneDayInMillis).toISOString().split('T')[0],
+            roomQuantity: 1,
+            adults: 1,
+            radius: 20,
+            ratings: [2,3,4,5],
+            priceRange: '100-1000'
+        }
+
+        let hotelOfferRequestSEA = {
+            cityCode: 'SEA',
+            checkInDate: new Date(Date.now() + oneDayInMillis).toISOString().split('T')[0],
+            checkOutDate: new Date(Date.now() + 2 * oneDayInMillis).toISOString().split('T')[0],
+            roomQuantity: 1,
+            adults: 1,
+            radius: 20,
+            ratings: [2,3,4,5],
+            priceRange: '100-1000'
+        }
+
+        return new Promise(resolve => {
+            Api.post('/hotel-offers', hotelOfferRequestLAX)
+                .then(resultLAX => {
+                    Api.post('/hotel-offers', hotelOfferRequestPAR)
+                        .then(resultPAR => {
+                            Api.post('/hotel-offers', hotelOfferRequestSEA)
+                                .then(resultSEA => {
+                                    resolve(this.shuffle(resultLAX.data.concat(resultPAR.data.concat(resultSEA.data))))
+                                })
+                        })
+                })
+        })
     }
 
     getHotelOffersHighlightsHotelPage = () => {
