@@ -44,7 +44,7 @@
 
 .input-range__label--min,
 .input-range__label--max {
-    bottom: -2.8rem;
+    bottom: 0.25rem;
     position: absolute;
 }
 
@@ -86,7 +86,7 @@
 
 .input-range__track--background {
     left: 5%;
-    margin-top: 12px;
+    margin-top: -20px;
     position: absolute;
     right: 5%;
     top: 65%;
@@ -97,7 +97,7 @@
 }
 
 .input-range {
-    height: 2rem;
+    min-height: 80px;
     position: relative;
     width: 100%;
 }
