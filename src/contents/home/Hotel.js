@@ -126,6 +126,7 @@ class Hotel extends React.Component {
                     }
                     {(!this.state.isHotelHighlightOffersLoading && this.state.hotelHighlightsOffers.length === 0) &&
                     <Toast timeout={10000}
+                           id={'hotelHighlightToast'}
                            header={'Essa não!'}
                            body={'Não conseguimos encontrar nenhuma oferta especial de hotéis no momento, por favor, tente novamente mais tarde'}/>
                     }

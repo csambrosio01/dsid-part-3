@@ -124,6 +124,7 @@ class Air extends React.Component {
                     }
                     {(!this.state.isFlightHighlightOffersLoading && this.state.flightHighlightOffers.length === 0) &&
                     <Toast timeout={10000}
+                           id={'airSearchToast'}
                            header={'Essa não!'}
                            body={'Não conseguimos encontrar nenhuma oferta especial de passagens aéreas no momento, por favor, tente novamente mais tarde'}/>
                     }
