@@ -16,7 +16,7 @@ class Toast extends React.Component {
         setTimeout(() => {
             this.setState({showToast: false})
             setTimeout(() => {
-                document.getElementById(this.props.id).hidden = true
+                if (document.getElementById(this.props.id) !== null) document.getElementById(this.props.id).hidden = true
             }, 510)
         }, this.props.timeout ? this.props.timeout : 5000)
     }
