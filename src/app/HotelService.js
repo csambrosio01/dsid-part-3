@@ -62,7 +62,16 @@ class HotelService {
                                 .then(resultSEA => {
                                     resolve(this.shuffle(resultLAX.data.concat(resultPAR.data.concat(resultSEA.data))))
                                 })
+                                .catch(() => {
+                                    resolve(this.shuffle(resultLAX.data.concat(resultPAR.data)))
+                                })
                         })
+                        .catch(() => {
+                            resolve(resultLAX.data)
+                        })
+                })
+                .catch(() => {
+                    resolve([])
                 })
         })
     }
@@ -110,7 +119,16 @@ class HotelService {
                                 .then(resultLON => {
                                     resolve(this.shuffle(resultNYC.data.concat(resultLAX.data.concat(resultLON.data))))
                                 })
+                                .catch(() => {
+                                    resolve(this.shuffle(resultNYC.data.concat(resultLAX.data)))
+                                })
                         })
+                        .catch(() => {
+                            resolve(resultNYC.data)
+                        })
+                })
+                .catch(() => {
+                    resolve([])
                 })
         })
     }
