@@ -12,7 +12,7 @@ class Air extends React.Component {
     state = {
         flightHighlightOffers: [],
         flightSearchOffers: [],
-        isFlightHighlightOffersLoading: false,
+        isFlightHighlightOffersLoading: true,
         isFlightSearchOffersLoading: false,
         hasSearched: false
     }

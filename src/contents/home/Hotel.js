@@ -13,7 +13,7 @@ class Hotel extends React.Component {
         hotelSearchOffers: [],
         hotelHighlightsOffers: [],
         isHotelSearchOffersLoading: false,
-        isHotelHighlightOffersLoading: false,
+        isHotelHighlightOffersLoading: true,
         hasSearched: false
     }
 
