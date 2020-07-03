@@ -21,7 +21,7 @@ class UserService {
                 let name = fieldValue.split(' ')
                 let isValid = name.length >= 2;
                 name.forEach(value => {
-                    value.length <= 3 && (isValid = false)
+                    value.length < 3 && (isValid = false)
                 })
                 errors.name = isValid ? '' : 'Preencha com seu nome completo'
                 break;
