@@ -8,16 +8,23 @@ class HotelHighlight extends React.Component {
 
     render() {
         return (
-            <div className="row">
-                <div className="col-md-12">
-                    <h2>Hotéis</h2>
+            <React.Fragment>
+                <h2>Hotéis</h2>
+                <div className="row">
+                    {this.hotelOffers().map(hotelOffer => {
+                        return (
+                            <HotelInfoCard hotelOffer={hotelOffer}/>
+                        )
+                    })}
                 </div>
-                {this.hotelOffers().map(hotelOffer => {
-                    return (
-                        <HotelInfoCard hotelOffer={hotelOffer}/>
-                    )
-                })}
-            </div>
+                {this.hotelOffers().length === 0 &&
+                <div className="alert alert-danger">
+                    <h4 className="alert-heading">Essa não!</h4>
+                    <p>Não conseguimos encontrar nenhuma oferta especial de hotéis no momento, por favor, tente novamente mais
+                        tarde</p>
+                </div>
+                }
+            </React.Fragment>
         )
     }
 }
