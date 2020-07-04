@@ -8,6 +8,7 @@ import UserService from '../../app/UserService'
 
 import App from "../../containers/App";
 import Card from "../../components/Card";
+import ZipCodeService from "../../app/ZipCodeService";
 
 class CreateUser extends React.Component {
     state = {
@@ -17,15 +18,27 @@ class CreateUser extends React.Component {
             name: '',
             email: '',
             phoneNumber: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            address: {
+                zipCode: '',
+                address: '',
+                complement: '',
+                neighborhood: '',
+                city: '',
+                state: '',
+                country: '',
+                number: ''
+            }
         },
         errors: {},
-        loading: false
+        loading: false,
+        isZipCodeLoading: false
     }
 
     constructor(props) {
         super(props);
         this.userService = new UserService();
+        this.zipCodeService = new ZipCodeService();
     }
 
     validateForm = (user) => {
@@ -43,8 +56,60 @@ class CreateUser extends React.Component {
     onChange = (event) => {
         const {name, value} = event.target;
         let user = this.state.user
-        user[name] = value
-        this.setState({user})
+        if (name === 'zipCode') {
+            let zipCode = value
+            user.address.zipCode = zipCode
+            this.setState({user})
+
+            if (zipCode.replace(/\D/g, '').length === 8) {
+                this.setState({isZipCodeLoading: true})
+                this.zipCodeService.getAddressByZipCode(zipCode.replace(/\D/g, ''))
+                    .then(result => {
+                        let address = result.data
+                        user.address.zipCode = address.zipCode
+                        user.address.address = address.address
+                        user.address.neighborhood = address.neighborhood
+                        user.address.city = address.city
+                        user.address.state = address.state
+                        user.address.country = address.country
+                        this.setState({
+                            user: user,
+                            isZipCodeLoading: false
+                        })
+                    })
+                    .catch(() => {
+                        user.address.zipCode = zipCode
+                        this.setState({
+                            user: user,
+                            isZipCodeLoading: false
+                        })
+                        store.addNotification({
+                            title: 'Falha!',
+                            message: 'Não conseguimos encontrar o endereço relacionado ao CEP digitado, por favor preencha-o manualmente',
+                            type: 'danger',
+                            container: 'top-center',
+                            animationIn: ["animated", "fadeIn"],
+                            animationOut: ["animated", "fadeOut"],
+                            dismiss: {
+                                duration: 3000
+                            }
+                        })
+                    })
+            }
+        } else {
+            if (name === 'address' ||
+                name === 'neighborhood' ||
+                name === 'city' ||
+                name === 'state' ||
+                name === 'country' ||
+                name === 'complement' ||
+                name === 'number') {
+                user.address[name] = value
+            } else {
+                user[name] = value
+            }
+            this.setState({user})
+        }
     }
 
     onBlur = (event) => {
@@ -119,6 +184,7 @@ class CreateUser extends React.Component {
                 <Card header={"Cadastrar um novo usuário"}>
                     {!this.state.loading &&
                     <form onSubmit={this.onSubmit}>
+                        <h3 className="mb-3" style={{color: '#495057'}}>Informações básicas</h3>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
@@ -132,8 +198,6 @@ class CreateUser extends React.Component {
                                     <span style={{color: "red"}}>{this.state.errors["name"]}</span>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label>E-mail:</label>
@@ -160,8 +224,6 @@ class CreateUser extends React.Component {
                                     <span style={{color: "red"}}>{this.state.errors["phoneNumber"]}</span>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label>Usuário:</label>
@@ -188,8 +250,6 @@ class CreateUser extends React.Component {
                                     <span style={{color: "red"}}>{this.state.errors["password"]}</span>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label>Confirmar senha:</label>
@@ -203,7 +263,119 @@ class CreateUser extends React.Component {
                                 </div>
                             </div>
                         </div>
-
+                        <hr className="my-3"/>
+                        <h3 className="mb-3" style={{color: '#495057'}}>Endereço</h3>
+                        <div className="row">
+                            <div className="col-md-2">
+                                <div className="form-group">
+                                    <label>CEP</label>
+                                    <NumberFormat name="zipCode"
+                                                  format="#####-###"
+                                                  value={this.state.user.address.zipCode}
+                                                  onChange={this.onChange}
+                                                  onBlur={this.onBlur}
+                                                  className="form-control"/>
+                                    <span style={{color: "red"}}>{this.state.errors["zipCode"]}</span>
+                                </div>
+                            </div>
+                            <div className="col-md-1 justify-content-center">
+                                {this.state.isZipCodeLoading &&
+                                <React.Fragment>
+                                    <label/>
+                                    <div className="mt-1">
+                                        <Loader type="Oval" color="Blue" height={40} width={40}/>
+                                    </div>
+                                </React.Fragment>
+                                }
+                            </div>
+                            <div className="col-md-9">
+                                <div className="form-group">
+                                    <label>Logradouro</label>
+                                    <input type="text"
+                                           name="address"
+                                           value={this.state.user.address.address}
+                                           onChange={this.onChange}
+                                           onBlur={this.onBlur}
+                                           className="form-control"/>
+                                    <span style={{color: "red"}}>{this.state.errors["address"]}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-2">
+                                <div className="form-group">
+                                    <label>Número</label>
+                                    <input type="text"
+                                           name="number"
+                                           value={this.state.user.address.number}
+                                           onChange={this.onChange}
+                                           onBlur={this.onBlur}
+                                           className="form-control"/>
+                                    <span style={{color: "red"}}>{this.state.errors["number"]}</span>
+                                </div>
+                            </div>
+                            <div className="col-md-5">
+                                <div className="form-group">
+                                    <label>Complemento</label>
+                                    <input type="text"
+                                           name="complement"
+                                           value={this.state.user.address.complement}
+                                           onChange={this.onChange}
+                                           onBlur={this.onBlur}
+                                           className="form-control"/>
+                                </div>
+                            </div>
+                            <div className="col-md-5">
+                                <div className="form-group">
+                                    <label>Bairro</label>
+                                    <input type="text"
+                                           name="neighborhood"
+                                           value={this.state.user.address.neighborhood}
+                                           onChange={this.onChange}
+                                           onBlur={this.onBlur}
+                                           className="form-control"/>
+                                    <span style={{color: "red"}}>{this.state.errors["neighborhood"]}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-4">
+                                <div className="form-group">
+                                    <label>Cidade</label>
+                                    <input type="text"
+                                           name="city"
+                                           value={this.state.user.address.city}
+                                           onChange={this.onChange}
+                                           onBlur={this.onBlur}
+                                           className="form-control"/>
+                                    <span style={{color: "red"}}>{this.state.errors["city"]}</span>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <div className="form-group">
+                                    <label>Estado</label>
+                                    <input type="text"
+                                           name="state"
+                                           value={this.state.user.address.state}
+                                           onChange={this.onChange}
+                                           onBlur={this.onBlur}
+                                           className="form-control"/>
+                                    <span style={{color: "red"}}>{this.state.errors["state"]}</span>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <div className="form-group">
+                                    <label>País</label>
+                                    <input type="text"
+                                           name="country"
+                                           value={this.state.user.address.country}
+                                           onChange={this.onChange}
+                                           onBlur={this.onBlur}
+                                           className="form-control"/>
+                                    <span style={{color: "red"}}>{this.state.errors["country"]}</span>
+                                </div>
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="col-md-1">
                                 <button type="submit" className="btn btn-primary">Cadastrar</button>
