@@ -5,6 +5,7 @@ const USER = '_logged_user';
 const validEmailRegex = RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$');
 const validPasswordRegex = RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#(){}?:;><=.,^~_+-\\[\\]])[A-Za-z\\d@$!%*?&#(){}?:;><=.,^~_+-\\[\\]]{8,40}$')
 const validPhoneNumberRegex = RegExp('^\\([1-9]{2}\\) (?:[2-8]|9[1-9])[0-9]{3} [0-9]{4}$')
+const validZipCodeRegex = RegExp('[0-9]{5}-[\\d]{3}')
 
 class UserService {
     save = (user) => {
@@ -43,6 +44,13 @@ class UserService {
             case 'confirmPassword':
                 errors.confirmPassword = (fieldValue === user.password) ? '' : 'Deve ser igual ao campo senha'
                 break;
+            case 'zipCode':
+                errors.zipCode = validZipCodeRegex.test(fieldValue) ?
+                    '' :
+                    'Preencha com um CEP válido'
+                break;
+            case 'complement':
+                break;
             default:
                 errors[fieldName] = fieldValue.length > 0 ? '' : 'O campo é obrigatório'
                 break;
@@ -54,13 +62,22 @@ class UserService {
     validate = (user) => {
         let errors = {}
         Object.keys(user).forEach(fieldName => {
-            this.validateField(user, errors, fieldName, user[fieldName])
+            if (fieldName === 'address') {
+                Object.keys(user.address).forEach(addressFieldName => {
+                    this.validateField(user, errors, fieldName, user.address[addressFieldName])
+                })
+            } else {
+                this.validateField(user, errors, fieldName, user[fieldName])
+            }
         })
 
         return errors;
     }
 
     createUser = (user) => {
+        if (!user.address.complement || user.address.complement === '') {
+            user.address.complement = undefined
+        }
         return Api.post('/users/create', user)
             .then(response => {
                 this.save(response.data)
