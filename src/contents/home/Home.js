@@ -67,14 +67,6 @@ class Home extends React.Component {
                     <FlightHighlight flightOffers={this.state.flightOffers}/>
 
                     <HotelHighlight hotelOffers={this.state.hotelOffers}/>
-
-                    <h2>Carros</h2>
-
-                    <div className="alert alert-danger">
-                        <h4 className="alert-heading">Essa não!</h4>
-                        <p>Não conseguimos encontrar nenhuma oferta especial de carros no momento, por favor, tente novamente mais
-                            tarde</p>
-                    </div>
                 </React.Fragment>
                 }
                 {(this.state.isFlightOffersHighlightLoading ||
