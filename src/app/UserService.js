@@ -107,6 +107,10 @@ class UserService {
                 return response
             })
     }
+
+    recoverPassword = (recoverPassword) => {
+        return Api.post('/users/recover-password', recoverPassword)
+    }
 }
 
 export default UserService
