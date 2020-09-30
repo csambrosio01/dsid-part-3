@@ -31,7 +31,7 @@ class Login extends React.Component {
         const { name, value } = event.target;
 
         let errors = this.state.errors;
-        errors = this.userService.validateField(this.state.user, errors, name, value)
+        errors = this.userService.validateField(this.state.login, errors, name, value)
 
         this.setState({errors})
     }
