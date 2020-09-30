@@ -135,6 +135,7 @@ class Login extends React.Component {
                                            onBlur={this.onBlur}
                                            className="form-control"/>
                                     <span style={{color: "red"}}>{this.state.errors["password"]}</span>
+                                    <a type="button" className="btn btn-link p-0" href="/recover-password">Esqueci minhas credenciais</a>
                                 </div>
                             </div>
                         </div>
