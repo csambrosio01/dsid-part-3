@@ -74,7 +74,7 @@ class RecoverCredentials extends React.Component {
                 .catch(error => {
                     store.addNotification({
                         title: 'Falha!',
-                        message: error.response.data.error,
+                        message: 'Não foi possível concluir o seu pedido. Por favor, tente novamente mais tarde.',
                         type: 'danger',
                         container: 'top-center',
                         animationIn: ["animated", "fadeIn"],
