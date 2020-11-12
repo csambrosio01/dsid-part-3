@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import FlightService from "../../../app/FlightService";
 
 class FlightSearchInfoCard extends React.Component {
@@ -29,6 +30,24 @@ class FlightSearchInfoCard extends React.Component {
 
     checkOneWay = () => {
         return this.props.flightOffer.itineraries.length === 1
+    }
+
+    handleClick(flightOffer) {
+        this.flightService.shouldRedirectToBuyPage(flightOffer)
+            .then(response => {
+                if (response) {
+                    this.props.history.push({
+                        pathname: '/air-buy',
+                        flightOffer: flightOffer
+                    })
+                } else {
+                    this.props.history.push({
+                        pathname: '/login',
+                        search: `navto=/air-buy`,
+                        flightOffer: flightOffer
+                    })
+                }
+            })
     }
 
     render() {
@@ -66,11 +85,11 @@ class FlightSearchInfoCard extends React.Component {
                         <h4 className="card-title mt-2">Bagagens não inclusas</h4>
                     </div>
                     <h4 className="card-title mt-2">Preço por adulto: U$ {this.props.flightOffer.travelerPricings[0].price.total}</h4>
-                    <button type="button" className="btn btn-primary" disabled>Comprar</button>
+                    <button type="button" className="btn btn-primary" onClick={() => this.handleClick(this.props.flightOffer)}>Comprar</button>
                 </div>
             </div>
         )
     }
 }
 
-export default FlightSearchInfoCard
+export default withRouter(FlightSearchInfoCard)
