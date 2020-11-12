@@ -68,7 +68,6 @@ class Login extends React.Component {
                         }
                     })
 
-                    debugger
                     let navto = new URLSearchParams(this.props.location.search).get("navto")
                     if (navto) {
                         if (this.props.location.flightOffer) {
