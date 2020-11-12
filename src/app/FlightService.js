@@ -1,7 +1,14 @@
 import Api from "../api/Api";
 import moment from "moment";
+import UserService from "./UserService";
 
 class FlightService {
+
+    constructor() {
+        this.userService = new UserService()
+    }
+
+
     getFlightOffers = (searchObject) => {
 
         let flight = {
@@ -80,6 +87,18 @@ class FlightService {
                 break;
         }
         return string
+    }
+
+    shouldRedirectToBuyPage = () => {
+        return new Promise(resolve => {
+            this.userService.getUser()
+                .then(() => {
+                    resolve(true)
+                })
+                .catch(() => {
+                    resolve(false)
+                })
+        })
     }
 }
 
