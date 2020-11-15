@@ -30,8 +30,6 @@ class Buy extends React.Component {
 
     componentDidMount() {
         if (this.flightOffer) {
-            console.log(this.flightOffer)
-
             if (!this.flightOffer.numberOfPassengers || this.flightOffer.numberOfPassengers === 0) {
                 this.flightOffer.numberOfPassengers = 1
             }
