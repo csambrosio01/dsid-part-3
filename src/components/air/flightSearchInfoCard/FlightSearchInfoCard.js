@@ -33,6 +33,7 @@ class FlightSearchInfoCard extends React.Component {
     }
 
     handleClick(flightOffer) {
+        flightOffer.numberOfPassengers = flightOffer.travelerPricings.length
         this.flightService.shouldRedirectToBuyPage(flightOffer)
             .then(response => {
                 if (response) {
