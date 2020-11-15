@@ -1,0 +1,60 @@
+.label {
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    box-sizing: border-box;
+    color: black;
+    display: block;
+}
+
+.route {
+    margin-bottom: .75rem;
+    font-weight: bold;
+    font-size: 1.75rem;
+}
+
+.one-way {
+    font-size: 1rem;
+    color: dimgray;
+}
+
+.destination-title {
+    font-size: 1.25rem;
+    color: gray;
+}
+
+.date {
+    font-weight: 700 !important;
+    font-size: 1.25rem;
+    color: gray;
+}
+
+.iataCode {
+    font-weight: 700 !important;
+    font-size: .75rem;
+    color: dimgray;
+}
+
+.time {
+    font-size: 1.25rem;
+    color: gray;
+}
+
+.number-of-stops {
+    font-size: 1rem;
+    color: gray;
+    position: absolute;
+}
+
+@media (min-width: 1200px) {
+    .number-of-stops {
+        font-size: 1rem;
+        color: gray;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+}

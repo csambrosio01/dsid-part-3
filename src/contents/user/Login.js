@@ -68,22 +68,53 @@ class Login extends React.Component {
                         }
                     })
 
-                    this.props.history.push('/')
+                    let navto = new URLSearchParams(this.props.location.search).get("navto")
+                    if (navto) {
+                        if (this.props.location.flightOffer) {
+                            this.props.history.push({
+                                pathname: navto,
+                                flightOffer: this.props.location.flightOffer
+                            })
+                        } else if (this.props.location.hotelOffer) {
+                            this.props.history.push({
+                                pathname: navto,
+                                flightOffer: this.props.location.hotelOffer
+                            })
+                        } else {
+                            store.addNotification({
+                                title: 'Falha!',
+                                message: 'Não foi possível direcionar você para a tela de compra, por favor, refaça sua pesquisa',
+                                type: 'danger',
+                                container: 'top-center',
+                                animationIn: ["animated", "fadeIn"],
+                                animationOut: ["animated", "fadeOut"],
+                                dismiss: {
+                                    duration: 3000
+                                }
+                            })
+
+                            this.props.history.push('/')
+                        }
+                    } else {
+                        this.props.history.push('/')
+                    }
 
                     this.setState({loading: false})
                 })
                 .catch(error => {
-                    store.addNotification({
-                        title: 'Falha!',
-                        message: error.response.data.error,
-                        type: 'danger',
-                        container: 'top-center',
-                        animationIn: ["animated", "fadeIn"],
-                        animationOut: ["animated", "fadeOut"],
-                        dismiss: {
-                            duration: 3000
-                        }
-                    })
+                    if (error && error.response && error.response.data) {
+                        store.addNotification({
+                            title: 'Falha!',
+                            message: error.response.data.error ? error.response.data.error : 'Não foi possível completar sua solicitação, por favor tente novamente mais tarde',
+                            type: 'danger',
+                            container: 'top-center',
+                            animationIn: ["animated", "fadeIn"],
+                            animationOut: ["animated", "fadeOut"],
+                            dismiss: {
+                                duration: 3000
+                            }
+                        })
+                    }
 
                     this.setState({loading: false})
                 })
