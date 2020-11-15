@@ -71,9 +71,15 @@ class Login extends React.Component {
                     let navto = new URLSearchParams(this.props.location.search).get("navto")
                     if (navto) {
                         if (this.props.location.flightOffer) {
-                            this.props.history.push(navto)
+                            this.props.history.push({
+                                pathname: navto,
+                                flightOffer: this.props.location.flightOffer
+                            })
                         } else if (this.props.location.hotelOffer) {
-                            this.props.history.push(navto)
+                            this.props.history.push({
+                                pathname: navto,
+                                flightOffer: this.props.location.hotelOffer
+                            })
                         } else {
                             store.addNotification({
                                 title: 'Falha!',
