@@ -101,15 +101,15 @@ class Buy extends React.Component {
         }
         let days = []
         for (let i = 1; i <= 31; i++) {
-            days.push(<option key={i}>i</option>)
+            days.push(<option key={i}>{i}</option>)
         }
         let months = []
         for (let i = 1; i <= 12; i++) {
-            months.push(<option key={i}>i</option>)
+            months.push(<option key={i}>{i}</option>)
         }
         let years = []
         for (let i = 1920; i <= 2008; i++) {
-            years.push(<option key={i}>i</option>)
+            years.push(<option key={i}>{i}</option>)
         }
         return (
             <App>
@@ -147,7 +147,6 @@ class Buy extends React.Component {
                                     <div className="form-group">
                                         <label>Nome do titular</label>
                                         <input type="text"
-                                               value={this.state.card.name}
                                                onChange={this.onChange}
                                                onBlur={this.onBlur}
                                                className="form-control"/>
@@ -245,21 +244,21 @@ class Buy extends React.Component {
                                                     <option>Dia</option>
                                                     {days}
                                                 </select>
-                                                <span style={{color: "red"}}>{this.state.errors["document"]}</span>
+                                                <span style={{color: "red"}}>{this.state.errors["day"]}</span>
                                             </div>
                                             <div className="col-md-3">
                                                 <select className="form-control" name="birthDate">
                                                     <option>Mês</option>
                                                     {months}
                                                 </select>
-                                                <span style={{color: "red"}}>{this.state.errors["document"]}</span>
+                                                <span style={{color: "red"}}>{this.state.errors["month"]}</span>
                                             </div>
                                             <div className="col-md-3">
                                                 <select className="form-control" name="birthDate">
                                                     <option>Ano</option>
                                                     {years}
                                                 </select>
-                                                <span style={{color: "red"}}>{this.state.errors["document"]}</span>
+                                                <span style={{color: "red"}}>{this.state.errors["year"]}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -267,13 +266,13 @@ class Buy extends React.Component {
                                         <label>Sexo:</label>
                                         <div className="row">
                                             <div className="col-md-3">
-                                                <input type="radio" name="paymentType"/> Masculino
+                                                <input type="radio" value="male" name="gender"/> Masculino
                                             </div>
                                             <div className="col-md-3">
-                                                <input type="radio" value="debitCard" name="paymentType"/> Feminino
+                                                <input type="radio" value="female" name="gender"/> Feminino
                                             </div>
                                         </div>
-                                        <span style={{color: "red"}}>{this.state.errors["document"]}</span>
+                                        <span style={{color: "red"}}>{this.state.errors["gender"]}</span>
                                     </div>
                                     {this.state.passengers.length > 1 && (this.state.passengers.length !== passenger.number) &&
                                     <div className="border mb-4"/>
@@ -321,9 +320,9 @@ class Buy extends React.Component {
                                         className="time label">{this.flightService.convertDuration(this.props.location.flightOffer.itineraries[0].duration)}</div>
                                 </div>
                             </div>
-                            <div className="border"/>
                             {!this.checkOneWay() &&
                             <>
+                                <div className="border"/>
                                 <div>
                                     <div className="card-text destination-title label">Volta</div>
                                     <div
