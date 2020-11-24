@@ -3,9 +3,10 @@ import App from "../../containers/App";
 import Card from "../../components/Card";
 import FlightService from "../../app/FlightService";
 import NumberFormat from "react-number-format";
+import {store} from "react-notifications-component";
+import HotelService from "../../app/HotelService";
 
 import './Buy.css'
-import {store} from "react-notifications-component";
 
 class Buy extends React.Component {
 
@@ -18,6 +19,7 @@ class Buy extends React.Component {
             cpf: ''
         },
         flightOffers: [],
+        hotelOffers: [],
         errors: {}
     }
 
@@ -26,10 +28,13 @@ class Buy extends React.Component {
 
         this.flightService = new FlightService()
         this.flightOffers = this.flightService.getCart()
+
+        this.hotelService = new HotelService()
+        this.hotelOffers = this.hotelService.getCart()
     }
 
     componentDidMount() {
-        if (this.flightOffers) {
+        if (this.flightOffers || this.hotelOffers) {
             if (this.flightOffers) {
                 let flightOffers = this.flightOffers.map(flightOffer => {
                     if (!flightOffer.numberOfPassengers || flightOffer.numberOfPassengers === 0) {
@@ -54,6 +59,14 @@ class Buy extends React.Component {
                 })
 
                 this.setState({flightOffers})
+            }
+
+            if (this.hotelOffers) {
+                let hotelOffers = this.hotelOffers.forEach(hotelOffer => {
+
+                })
+
+                this.setState({hotelOffers})
             }
         } else {
             this.props.history.push('/404')
@@ -114,7 +127,7 @@ class Buy extends React.Component {
     }
 
     render() {
-        if (!this.flightOffers) {
+        if (!this.flightOffers && !this.hotelOffers) {
             return <div/>
         }
         let days = []

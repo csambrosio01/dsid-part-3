@@ -1,8 +1,30 @@
 import Api from "../api/Api";
 
 const oneDayInMillis = 24 * 60 * 60 * 1000
+const HOTEL_OFFERS = '_hotel_offers';
 
 class HotelService {
+
+    delete = () => {
+        localStorage.removeItem(HOTEL_OFFERS)
+    }
+
+    getCart = () => {
+        return JSON.parse(localStorage.getItem(HOTEL_OFFERS))
+    }
+
+    saveToCart = (hotelOffer) => {
+        let hotelOffers = this.getCart()
+
+        if (hotelOffers) {
+            hotelOffers.push(hotelOffer)
+        } else {
+            hotelOffers = [hotelOffer]
+        }
+
+        localStorage.setItem(HOTEL_OFFERS, JSON.stringify(hotelOffers))
+    }
+
     shuffle = (array) => {
         let currentIndex = array.length;
         let temporaryValue, randomIndex;

@@ -1,5 +1,7 @@
 import React from "react";
 import StringUtils from "../../../utils/StringUtils";
+import {store} from "react-notifications-component";
+import HotelService from "../../../app/HotelService";
 
 const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',]
 const oneDayInMillis = 24 * 60 * 60 * 1000
@@ -9,6 +11,7 @@ class HotelSearchInfoCard extends React.Component {
         super(props);
 
         this.stringUtils = new StringUtils()
+        this.hotelService = new HotelService()
     }
 
     getRating = () => {
@@ -46,6 +49,22 @@ class HotelSearchInfoCard extends React.Component {
         let dateIn = new Date(this.props.hotelOffer.offers[0].checkInDate)
         let dateOut = new Date(this.props.hotelOffer.offers[0].checkOutDate)
         return Math.abs(dateOut - dateIn) / oneDayInMillis
+    }
+
+    handleClick = (hotelOffers) => {
+        this.hotelService.saveToCart(hotelOffers)
+
+        store.addNotification({
+            title: 'Sucesso!',
+            message: 'Adicionamos essa oferta ao carrinho',
+            type: 'success',
+            container: 'top-center',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+                duration: 3000
+            }
+        })
     }
 
     render() {
@@ -87,7 +106,7 @@ class HotelSearchInfoCard extends React.Component {
                         Preço da diária: US$ {offer.price.total}
                     </h3>
                     }
-                    <button type="button" className="btn btn-primary btn-lg" disabled>Comprar</button>
+                    <button type="button" className="btn btn-primary btn-lg" onClick={() => this.handleClick(this.props.hotelOffer)}>Adicionar ao carrinho</button>
                 </div>
             </div>
         )
