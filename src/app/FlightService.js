@@ -2,12 +2,33 @@ import Api from "../api/Api";
 import moment from "moment";
 import UserService from "./UserService";
 
+const FLIGHT_OFFERS = '_flight_offers';
+
 class FlightService {
 
     constructor() {
         this.userService = new UserService()
     }
 
+    delete = () => {
+        localStorage.removeItem(FLIGHT_OFFERS)
+    }
+
+    getCart = () => {
+        return JSON.parse(localStorage.getItem(FLIGHT_OFFERS))
+    }
+
+    saveToCart = (flightOffer) => {
+        let flightOffers = this.getCart()
+
+        if (flightOffers) {
+            flightOffers.push(flightOffer)
+        } else {
+            flightOffers = [flightOffer]
+        }
+
+        localStorage.setItem(FLIGHT_OFFERS, JSON.stringify(flightOffers))
+    }
 
     getFlightOffers = (searchObject) => {
 
