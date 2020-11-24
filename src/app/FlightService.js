@@ -109,18 +109,6 @@ class FlightService {
         }
         return string
     }
-
-    shouldRedirectToBuyPage = () => {
-        return new Promise(resolve => {
-            this.userService.getUser()
-                .then(() => {
-                    resolve(true)
-                })
-                .catch(() => {
-                    resolve(false)
-                })
-        })
-    }
 }
 
 export default FlightService;

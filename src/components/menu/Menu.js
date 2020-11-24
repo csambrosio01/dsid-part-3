@@ -42,6 +42,22 @@ class Menu extends React.Component {
             })
     }
 
+    handleClick = () => {
+        this.userService.shouldRedirectToBuyPage()
+            .then(response => {
+                if (response) {
+                    this.props.history.push({
+                        pathname: '/buy'
+                    })
+                } else {
+                    this.props.history.push({
+                        pathname: '/login',
+                        search: `navto=/buy`,
+                    })
+                }
+            })
+    }
+
     render() {
         return (
             <div className="collapse navbar-collapse" id="navbarColor02">
@@ -60,6 +76,12 @@ class Menu extends React.Component {
                 </ul>
 
                 <ul className="navbar-nav my-2 my-lg-0">
+                    <li className="nav-item active d-inline-block text-center mr-1">
+                        <button type="button" className="btn btn-link" style={{color: "#ffffff"}} onClick={this.handleClick}>
+                            <i className="fas fa-shopping-cart mt-1"/>
+                        </button>
+                    </li>
+
                     {!this.state.user &&
                     <li className="nav-item active d-inline-block text-center">
                         <Link className="nav-link" to="/login">
