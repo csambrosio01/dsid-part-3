@@ -3,9 +3,12 @@ import App from "../../containers/App";
 import Card from "../../components/Card";
 import FlightService from "../../app/FlightService";
 import NumberFormat from "react-number-format";
+import {store} from "react-notifications-component";
+import HotelService from "../../app/HotelService";
 
 import './Buy.css'
-import {store} from "react-notifications-component";
+import ReactStars from "react-stars";
+import StringUtils from "../../utils/StringUtils";
 
 class Buy extends React.Component {
 
@@ -17,53 +20,73 @@ class Buy extends React.Component {
             cvv: '',
             cpf: ''
         },
-        passengers: [],
+        flightOffers: [],
+        hotelOffers: [],
         errors: {}
     }
 
     constructor(props) {
         super(props);
 
+        this.stringUtils = new StringUtils()
+
         this.flightService = new FlightService()
-        this.flightOffer = props.location.flightOffer
+        this.flightOffers = this.flightService.getCart()
+
+        this.hotelService = new HotelService()
+        this.hotelOffers = this.hotelService.getCart()
     }
 
     componentDidMount() {
-        if (this.flightOffer) {
-            if (!this.flightOffer.numberOfPassengers || this.flightOffer.numberOfPassengers === 0) {
-                this.flightOffer.numberOfPassengers = 1
+        if (this.flightOffers || this.hotelOffers) {
+            if (this.flightOffers) {
+                let flightOffers = this.flightOffers.map(flightOffer => {
+                    if (!flightOffer.numberOfPassengers || flightOffer.numberOfPassengers === 0) {
+                        flightOffer.numberOfPassengers = 1
+                    }
+
+                    let passengers = []
+
+                    for (let i = 1; i <= flightOffer.numberOfPassengers; i++) {
+                        let passenger = {
+                            number: i,
+                            name: '',
+                            country: '',
+                            document: ''
+                        }
+                        passengers.push(passenger)
+                    }
+
+                    flightOffer.passengers = passengers
+
+                    return flightOffer
+                })
+
+                this.setState({flightOffers})
             }
 
-            let passengers = []
+            if (this.hotelOffers) {
+                let hotelOffers = this.hotelOffers
 
-            for (let i = 1; i <= this.flightOffer.numberOfPassengers; i++) {
-                let passenger = {
-                    number: i,
-                    name: '',
-                    country: '',
-                    document: ''
-                }
-                passengers.push(passenger)
+                this.setState({hotelOffers})
             }
-
-            this.setState({passengers})
         } else {
             this.props.history.push('/404')
         }
     }
 
-    getTitle = () => {
+    getTitle = (flightOffer) => {
         let title = ''
 
-        let origin = this.flightOffer.itineraries[0].segments[0].departure.iataCode
-        let destination = this.flightOffer.itineraries[0].segments[this.flightOffer.itineraries[0].segments.length - 1].arrival.iataCode
+        let origin = flightOffer.itineraries[0].segments[0].departure.iataCode
+        let destination = flightOffer.itineraries[0].segments[flightOffer.itineraries[0].segments.length - 1].arrival.iataCode
         title += origin + ' - ' + destination
 
         return title
     }
 
-    checkOneWay = () => {
-        return this.flightOffer.itineraries.length === 1
+    checkOneWay = (flightOffer) => {
+        return flightOffer.itineraries.length === 1
     }
 
     getTime = (date) => {
@@ -95,8 +118,32 @@ class Buy extends React.Component {
         this.props.history.push('/')
     }
 
+    calculateTotalFlight = () => {
+        let total = 0
+
+        this.flightOffers.forEach(flightOffer => {
+            total = total + parseFloat(flightOffer.price.total)
+        })
+
+        return total
+    }
+
+    calculateTotalHotel = () => {
+        let total = 0
+
+        this.hotelOffers.forEach(hotelOffer => {
+            total = total + parseFloat(hotelOffer.offers[0].price.total)
+        })
+
+        return total
+    }
+
+    calculateTotal = () => {
+        return this.calculateTotalFlight() + this.calculateTotalHotel()
+    }
+
     render() {
-        if (!this.props.location.flightOffer) {
+        if (!this.flightOffers && !this.hotelOffers) {
             return <div/>
         }
         let days = []
@@ -189,176 +236,276 @@ class Buy extends React.Component {
                                 </div>
                             </div>
                         </Card>
-                        <Card header={"Passageiros"}>
-                            {this.state.passengers.map(passenger => {
-                                return <>
-                                    <div className="card-title route label">Passageiro {passenger.number}</div>
-                                    <div className="row">
-                                        <div className="form-group col-md-9">
-                                            <label>Nome Completo:</label>
-                                            <input type="text"
-                                                   name="name"
-                                                   onChange={this.onChange}
-                                                   onBlur={this.onBlur}
-                                                   className="form-control"/>
-                                            <span style={{color: "red"}}>{this.state.errors["name"]}</span>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="form-group col-md-9">
-                                            <label>País de residência:</label>
-                                            <input type="text"
-                                                   name="country"
-                                                   onChange={this.onChange}
-                                                   onBlur={this.onBlur}
-                                                   className="form-control"/>
-                                            <span style={{color: "red"}}>{this.state.errors["country"]}</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label>Tipo e número de documento:</label>
+                        {this.state.flightOffers.map(flightOffer => {
+                            return <Card header={this.getTitle(flightOffer)}>
+                                {flightOffer.passengers.map(passenger => {
+                                    return <>
+                                        <div className="card-title route label">Passageiro {passenger.number}</div>
                                         <div className="row">
-                                            <div className="col-md-3 mb-4">
-                                                <select className="form-control" name="docType">
-                                                    <option>CPF</option>
-                                                    <option>Passaporte</option>
-                                                </select>
+                                            <div className="form-group col-md-9">
+                                                <label>Nome Completo:</label>
+                                                <input type="text"
+                                                       name="name"
+                                                       onChange={this.onChange}
+                                                       onBlur={this.onBlur}
+                                                       className="form-control"/>
+                                                <span style={{color: "red"}}>{this.state.errors["name"]}</span>
                                             </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group">
-                                                    <input type="text"
-                                                           name="document"
-                                                           onChange={this.onChange}
-                                                           onBlur={this.onBlur}
-                                                           className="form-control"/>
-                                                    <span style={{color: "red"}}>{this.state.errors["document"]}</span>
+                                        </div>
+                                        <div className="row">
+                                            <div className="form-group col-md-9">
+                                                <label>País de residência:</label>
+                                                <input type="text"
+                                                       name="country"
+                                                       onChange={this.onChange}
+                                                       onBlur={this.onBlur}
+                                                       className="form-control"/>
+                                                <span style={{color: "red"}}>{this.state.errors["country"]}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label>Tipo e número de documento:</label>
+                                            <div className="row">
+                                                <div className="col-md-3 mb-4">
+                                                    <select className="form-control" name="docType">
+                                                        <option>CPF</option>
+                                                        <option>Passaporte</option>
+                                                    </select>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <input type="text"
+                                                               name="document"
+                                                               onChange={this.onChange}
+                                                               onBlur={this.onBlur}
+                                                               className="form-control"/>
+                                                        <span
+                                                            style={{color: "red"}}>{this.state.errors["document"]}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div>
+                                            <label>Data de nascimento:</label>
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <select className="form-control" name="birthDate">
+                                                        <option>Dia</option>
+                                                        {days}
+                                                    </select>
+                                                    <span style={{color: "red"}}>{this.state.errors["day"]}</span>
+                                                </div>
+                                                <div className="col-md-3">
+                                                    <select className="form-control" name="birthDate">
+                                                        <option>Mês</option>
+                                                        {months}
+                                                    </select>
+                                                    <span style={{color: "red"}}>{this.state.errors["month"]}</span>
+                                                </div>
+                                                <div className="col-md-3">
+                                                    <select className="form-control" name="birthDate">
+                                                        <option>Ano</option>
+                                                        {years}
+                                                    </select>
+                                                    <span style={{color: "red"}}>{this.state.errors["year"]}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label>Sexo:</label>
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <input type="radio" value="male" name="gender"/> Masculino
+                                                </div>
+                                                <div className="col-md-3">
+                                                    <input type="radio" value="female" name="gender"/> Feminino
+                                                </div>
+                                            </div>
+                                            <span style={{color: "red"}}>{this.state.errors["gender"]}</span>
+                                        </div>
+                                        {flightOffer.passengers.length > 1 && (flightOffer.passengers.length !== passenger.number) &&
+                                        <div className="border mb-4"/>
+                                        }
+                                    </>
+                                })}
+                            </Card>
+                        })}
+                        {this.state.hotelOffers.map(hotelOffer => {
+                            return <Card header={"Titular da reserva no hotel " + this.stringUtils.capitalize(hotelOffer.hotel.name)}>
+                                <div className="card-title route label">Adulto 1</div>
+                                <div className="row">
+                                    <div className="form-group col-md-9">
+                                        <label>Nome Completo:</label>
+                                        <input type="text"
+                                               name="name"
+                                               onChange={this.onChange}
+                                               onBlur={this.onBlur}
+                                               className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["name"]}</span>
                                     </div>
-                                    <div>
-                                        <label>Data de nascimento:</label>
-                                        <div className="row">
-                                            <div className="col-md-3">
-                                                <select className="form-control" name="birthDate">
-                                                    <option>Dia</option>
-                                                    {days}
-                                                </select>
-                                                <span style={{color: "red"}}>{this.state.errors["day"]}</span>
-                                            </div>
-                                            <div className="col-md-3">
-                                                <select className="form-control" name="birthDate">
-                                                    <option>Mês</option>
-                                                    {months}
-                                                </select>
-                                                <span style={{color: "red"}}>{this.state.errors["month"]}</span>
-                                            </div>
-                                            <div className="col-md-3">
-                                                <select className="form-control" name="birthDate">
-                                                    <option>Ano</option>
-                                                    {years}
-                                                </select>
-                                                <span style={{color: "red"}}>{this.state.errors["year"]}</span>
+                                </div>
+                                <div className="row">
+                                    <div className="form-group col-md-9">
+                                        <label>Telefone</label>
+                                        <NumberFormat name="phone"
+                                                      format="(##) ####-####"
+                                                      onChange={this.onChange}
+                                                      onBlur={this.onBlur}
+                                                      className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["phone"]}</span>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="form-group col-md-9">
+                                        <label>Email</label>
+                                        <input type="text"
+                                               name="mail"
+                                               onChange={this.onChange}
+                                               onBlur={this.onBlur}
+                                               className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["mail"]}</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label>Tipo e número de documento:</label>
+                                    <div className="row">
+                                        <div className="col-md-3 mb-4">
+                                            <select className="form-control" name="docType">
+                                                <option>CPF</option>
+                                                <option>Passaporte</option>
+                                            </select>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <input type="text"
+                                                       name="document"
+                                                       onChange={this.onChange}
+                                                       onBlur={this.onBlur}
+                                                       className="form-control"/>
+                                                <span
+                                                    style={{color: "red"}}>{this.state.errors["document"]}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label>Sexo:</label>
-                                        <div className="row">
-                                            <div className="col-md-3">
-                                                <input type="radio" value="male" name="gender"/> Masculino
-                                            </div>
-                                            <div className="col-md-3">
-                                                <input type="radio" value="female" name="gender"/> Feminino
-                                            </div>
-                                        </div>
-                                        <span style={{color: "red"}}>{this.state.errors["gender"]}</span>
-                                    </div>
-                                    {this.state.passengers.length > 1 && (this.state.passengers.length !== passenger.number) &&
-                                    <div className="border mb-4"/>
-                                    }
-                                </>
-                            })}
-                        </Card>
+                                </div>
+                            </Card>
+                        })}
+
                     </div>
                     <div className="col-lg-4">
                         <Card header={"Informações de pagamento"}>
-                            <div className="mb-2">
-                                <div className="card-title route label">
-                                    {this.getTitle()}
-                                </div>
-                                {this.checkOneWay() ? <div className="one-way label">Somente ida</div> :
-                                    <div className="one-way label">Ida e volta</div>}
-                            </div>
-                            <div className="border"/>
-                            <div>
-                                <div className="card-text destination-title label">Ida</div>
-                                <div
-                                    className="date label">{this.getDate(this.props.location.flightOffer.itineraries[0].segments[0].departure.at)}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-xl-3 pr-xl-0">
-                                    <div
-                                        className="iataCode">{this.props.location.flightOffer.itineraries[0].segments[0].departure.iataCode}</div>
-                                    <div
-                                        className="time label">{this.getTime(this.props.location.flightOffer.itineraries[0].segments[0].departure.at)}</div>
-                                </div>
-                                <div className="col-xl-3 px-xl-0 d-none d-xl-block">
-                                    <div className="number-of-stops label">
-                                        {this.flightService.getNumberOfStops(this.props.location.flightOffer.itineraries[0].segments.length - 1)}
+                            {this.state.flightOffers.map(flightOffer => {
+                                return <>
+                                    <div className="mb-2">
+                                        <div className="card-title route label">
+                                            {this.getTitle(flightOffer)}
+                                        </div>
+                                        {this.checkOneWay(flightOffer) ? <div className="one-way label">Somente ida</div> :
+                                            <div className="one-way label">Ida e volta</div>}
                                     </div>
-                                </div>
-                                <div className="col-xl-3 px-xl-0">
-                                    <div
-                                        className="iataCode">{this.props.location.flightOffer.itineraries[0].segments[this.props.location.flightOffer.itineraries[0].segments.length - 1].arrival.iataCode}</div>
-                                    <div
-                                        className="time label">{this.getTime(this.props.location.flightOffer.itineraries[0].segments[this.props.location.flightOffer.itineraries[0].segments.length - 1].arrival.at)}</div>
-                                </div>
-                                <div className="col-xl-3 pl-xl-0">
-                                    <div className="iataCode">Duração</div>
-                                    <div
-                                        className="time label">{this.flightService.convertDuration(this.props.location.flightOffer.itineraries[0].duration)}</div>
-                                </div>
-                            </div>
-                            {!this.checkOneWay() &&
-                            <>
-                                <div className="border"/>
-                                <div>
-                                    <div className="card-text destination-title label">Volta</div>
-                                    <div
-                                        className="date label">{this.getDate(this.props.location.flightOffer.itineraries[1].segments[0].departure.at)}</div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xl-3 pr-xl-0">
+                                    <div className="border"/>
+                                    <div>
+                                        <div className="card-text destination-title label">Ida</div>
                                         <div
-                                            className="iataCode">{this.props.location.flightOffer.itineraries[1].segments[0].departure.iataCode}</div>
-                                        <div
-                                            className="time label">{this.getTime(this.props.location.flightOffer.itineraries[1].segments[0].departure.at)}</div>
+                                            className="date label">{this.getDate(flightOffer.itineraries[0].segments[0].departure.at)}</div>
                                     </div>
-                                    <div className="col-xl-3 px-xl-0 d-none d-xl-block">
-                                        <div className="number-of-stops label">
-                                            {this.flightService.getNumberOfStops(this.props.location.flightOffer.itineraries[1].segments.length - 1)}
+                                    <div className="row">
+                                        <div className="col-xl-3 pr-xl-0">
+                                            <div
+                                                className="iataCode">{flightOffer.itineraries[0].segments[0].departure.iataCode}</div>
+                                            <div
+                                                className="time label">{this.getTime(flightOffer.itineraries[0].segments[0].departure.at)}</div>
+                                        </div>
+                                        <div className="col-xl-3 px-xl-0 d-none d-xl-block">
+                                            <div className="number-of-stops label">
+                                                {this.flightService.getNumberOfStops(flightOffer.itineraries[0].segments.length - 1)}
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-3 px-xl-0">
+                                            <div
+                                                className="iataCode">{flightOffer.itineraries[0].segments[flightOffer.itineraries[0].segments.length - 1].arrival.iataCode}</div>
+                                            <div
+                                                className="time label">{this.getTime(flightOffer.itineraries[0].segments[flightOffer.itineraries[0].segments.length - 1].arrival.at)}</div>
+                                        </div>
+                                        <div className="col-xl-3 pl-xl-0">
+                                            <div className="iataCode">Duração</div>
+                                            <div
+                                                className="time label">{this.flightService.convertDuration(flightOffer.itineraries[0].duration)}</div>
                                         </div>
                                     </div>
-                                    <div className="col-xl-3 px-xl-0">
-                                        <div
-                                            className="iataCode">{this.props.location.flightOffer.itineraries[1].segments[this.props.location.flightOffer.itineraries[1].segments.length - 1].arrival.iataCode}</div>
-                                        <div
-                                            className="time label">{this.getTime(this.props.location.flightOffer.itineraries[1].segments[this.props.location.flightOffer.itineraries[1].segments.length - 1].arrival.at)}</div>
+                                    {!this.checkOneWay(flightOffer) &&
+                                    <>
+                                        <div className="border"/>
+                                        <div>
+                                            <div className="card-text destination-title label">Volta</div>
+                                            <div
+                                                className="date label">{this.getDate(flightOffer.itineraries[1].segments[0].departure.at)}</div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-xl-3 pr-xl-0">
+                                                <div
+                                                    className="iataCode">{flightOffer.itineraries[1].segments[0].departure.iataCode}</div>
+                                                <div
+                                                    className="time label">{this.getTime(flightOffer.itineraries[1].segments[0].departure.at)}</div>
+                                            </div>
+                                            <div className="col-xl-3 px-xl-0 d-none d-xl-block">
+                                                <div className="number-of-stops label">
+                                                    {this.flightService.getNumberOfStops(flightOffer.itineraries[1].segments.length - 1)}
+                                                </div>
+                                            </div>
+                                            <div className="col-xl-3 px-xl-0">
+                                                <div
+                                                    className="iataCode">{flightOffer.itineraries[1].segments[flightOffer.itineraries[1].segments.length - 1].arrival.iataCode}</div>
+                                                <div
+                                                    className="time label">{this.getTime(flightOffer.itineraries[1].segments[flightOffer.itineraries[1].segments.length - 1].arrival.at)}</div>
+                                            </div>
+                                            <div className="col-xl-3 pl-xl-0">
+                                                <div className="iataCode">Duração</div>
+                                                <div
+                                                    className="time label">{this.flightService.convertDuration(flightOffer.itineraries[1].duration)}</div>
+                                            </div>
+                                        </div>
+                                    </>
+                                    }
+                                    <div className="border"/>
+                                </>
+                            })}
+                            {this.state.hotelOffers.map(hotelOffer => {
+                                return <>
+                                    <div className="mb-2">
+                                        <div className="card-title route label mb-0">
+                                            {this.stringUtils.capitalize(hotelOffer.hotel.name)}
+                                        </div>
+                                        <ReactStars count={parseFloat(hotelOffer.hotel.rating)}
+                                                    size={25}
+                                                    color1={'#ffffff'}
+                                                    half={false}
+                                                    color2={'#ffd700'}
+                                                    value={parseFloat(hotelOffer.hotel.rating)}
+                                                    edit={false}/>
                                     </div>
-                                    <div className="col-xl-3 pl-xl-0">
-                                        <div className="iataCode">Duração</div>
-                                        <div
-                                            className="time label">{this.flightService.convertDuration(this.props.location.flightOffer.itineraries[1].duration)}</div>
+                                    <div className="one-way label">{this.hotelService.getAddress(hotelOffer)}</div>
+                                    <div className="row">
+                                        <div className="col-xl-6 pr-xl-0">
+                                            <div className="hotel-date-header">Check in</div>
+                                            <div className="hotel-date label mb-0">{this.getDate(hotelOffer.offers[0].checkInDate)}</div>
+                                            <div className="hotel-date-header">16:00</div>
+                                        </div>
+                                        <div className="col-xl-6 px-xl-0">
+                                            <div className="hotel-date-header">Check out</div>
+                                            <div className="hotel-date label mb-0">{this.getDate(hotelOffer.offers[0].checkOutDate)}</div>
+                                            <div className="hotel-date-header">12:00</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </>
-                            }
-                            <div className="border"/>
-                            <div className="destination-title label">Valor por pessoa:
-                                U$ {this.props.location.flightOffer.travelerPricings[0].price.total}</div>
+                                    <div className="border"/>
+                                </>
+                            })}
+                            <div className="destination-title label">Valor passagens:
+                                U$ {this.calculateTotalFlight()}</div>
+                            <div className="destination-title label">Valor hoteis:
+                                U$ {this.calculateTotalHotel()}</div>
                             <div className="route label">Valor total:
-                                U$ {this.props.location.flightOffer.price.total}</div>
+                                U$ {this.calculateTotal()}</div>
                             <button type="button" className="btn btn-primary" onClick={() => this.handleClick()}>Comprar</button>
                         </Card>
                     </div>

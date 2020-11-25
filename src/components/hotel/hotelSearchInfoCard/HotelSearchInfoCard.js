@@ -1,5 +1,7 @@
 import React from "react";
 import StringUtils from "../../../utils/StringUtils";
+import {store} from "react-notifications-component";
+import HotelService from "../../../app/HotelService";
 
 const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',]
 const oneDayInMillis = 24 * 60 * 60 * 1000
@@ -9,6 +11,7 @@ class HotelSearchInfoCard extends React.Component {
         super(props);
 
         this.stringUtils = new StringUtils()
+        this.hotelService = new HotelService()
     }
 
     getRating = () => {
@@ -19,21 +22,6 @@ class HotelSearchInfoCard extends React.Component {
             aux.push(i)
         }
         return aux
-    }
-
-    getAddress = () => {
-        let address = this.props.hotelOffer.hotel.address
-        let addressString = ''
-
-        address.lines.forEach(line => {
-            addressString += this.stringUtils.capitalize(line) + ' '
-        })
-        addressString.trim()
-        addressString += ', ' + this.stringUtils.capitalize(address.cityName)
-        addressString += (address.stateCode !== undefined) ? ', ' + address.stateCode : ''
-        addressString += ', ' + address.countryCode
-
-        return addressString
     }
 
     getDate = (fieldName) => {
@@ -48,6 +36,22 @@ class HotelSearchInfoCard extends React.Component {
         return Math.abs(dateOut - dateIn) / oneDayInMillis
     }
 
+    handleClick = (hotelOffers) => {
+        this.hotelService.saveToCart(hotelOffers)
+
+        store.addNotification({
+            title: 'Sucesso!',
+            message: 'Adicionamos essa oferta ao carrinho',
+            type: 'success',
+            container: 'top-center',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+                duration: 3000
+            }
+        })
+    }
+
     render() {
         const hotel = this.props.hotelOffer.hotel
         const offer = this.props.hotelOffer.offers[0]
@@ -60,7 +64,7 @@ class HotelSearchInfoCard extends React.Component {
                 </div>
                 <div className="card-header">
                     <h3 className="card-text">Informações básicas:</h3>
-                    <h4 className="card-text">{this.getAddress()}</h4>
+                    <h4 className="card-text">{this.hotelService.getAddress(this.props.hotelOffer)}</h4>
                     <h4 className="card-text">
                         Distância do centro: {hotel.hotelDistance.distance} {hotel.hotelDistance.distanceUnit}
                     </h4>
@@ -87,7 +91,7 @@ class HotelSearchInfoCard extends React.Component {
                         Preço da diária: US$ {offer.price.total}
                     </h3>
                     }
-                    <button type="button" className="btn btn-primary btn-lg" disabled>Comprar</button>
+                    <button type="button" className="btn btn-primary btn-lg" onClick={() => this.handleClick(this.props.hotelOffer)}>Adicionar ao carrinho</button>
                 </div>
             </div>
         )

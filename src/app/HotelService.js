@@ -1,8 +1,35 @@
 import Api from "../api/Api";
+import StringUtils from "../utils/StringUtils";
 
 const oneDayInMillis = 24 * 60 * 60 * 1000
+const HOTEL_OFFERS = '_hotel_offers';
 
 class HotelService {
+
+    constructor() {
+        this.stringUtils = new StringUtils()
+    }
+
+    delete = () => {
+        localStorage.removeItem(HOTEL_OFFERS)
+    }
+
+    getCart = () => {
+        return JSON.parse(localStorage.getItem(HOTEL_OFFERS))
+    }
+
+    saveToCart = (hotelOffer) => {
+        let hotelOffers = this.getCart()
+
+        if (hotelOffers) {
+            hotelOffers.push(hotelOffer)
+        } else {
+            hotelOffers = [hotelOffer]
+        }
+
+        localStorage.setItem(HOTEL_OFFERS, JSON.stringify(hotelOffers))
+    }
+
     shuffle = (array) => {
         let currentIndex = array.length;
         let temporaryValue, randomIndex;
@@ -159,6 +186,21 @@ class HotelService {
         }
 
         return Api.post('/hotel-offers', hotelRequest)
+    }
+
+    getAddress = (hotelOffer) => {
+        let address = hotelOffer.hotel.address
+        let addressString = ''
+
+        address.lines.forEach(line => {
+            addressString += this.stringUtils.capitalize(line) + ' '
+        })
+        addressString = addressString.trim()
+        addressString += ', ' + this.stringUtils.capitalize(address.cityName)
+        addressString += (address.stateCode !== undefined) ? ', ' + address.stateCode : ''
+        addressString += ', ' + address.countryCode
+
+        return addressString
     }
 }
 

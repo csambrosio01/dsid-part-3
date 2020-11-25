@@ -126,6 +126,18 @@ class UserService {
     recoverPassword = (recoverPassword) => {
         return Api.post('/users/recover-password', recoverPassword)
     }
+
+    shouldRedirectToBuyPage = () => {
+        return new Promise(resolve => {
+            this.getUser()
+                .then(() => {
+                    resolve(true)
+                })
+                .catch(() => {
+                    resolve(false)
+                })
+        })
+    }
 }
 
 export default UserService

@@ -1,6 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import FlightService from "../../../app/FlightService";
+import {store} from "react-notifications-component";
 
 class FlightSearchInfoCard extends React.Component {
     state = {
@@ -32,23 +33,22 @@ class FlightSearchInfoCard extends React.Component {
         return this.props.flightOffer.itineraries.length === 1
     }
 
-    handleClick(flightOffer) {
+    handleClick = (flightOffer) => {
         flightOffer.numberOfPassengers = flightOffer.travelerPricings.length
-        this.flightService.shouldRedirectToBuyPage(flightOffer)
-            .then(response => {
-                if (response) {
-                    this.props.history.push({
-                        pathname: '/air-buy',
-                        flightOffer: flightOffer
-                    })
-                } else {
-                    this.props.history.push({
-                        pathname: '/login',
-                        search: `navto=/air-buy`,
-                        flightOffer: flightOffer
-                    })
-                }
-            })
+
+        this.flightService.saveToCart(flightOffer)
+
+        store.addNotification({
+            title: 'Sucesso!',
+            message: 'Adicionamos essa oferta ao carrinho',
+            type: 'success',
+            container: 'top-center',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+                duration: 3000
+            }
+        })
     }
 
     render() {
@@ -86,7 +86,7 @@ class FlightSearchInfoCard extends React.Component {
                         <h4 className="card-title mt-2">Bagagens não inclusas</h4>
                     </div>
                     <h4 className="card-title mt-2">Preço por adulto: U$ {this.props.flightOffer.travelerPricings[0].price.total}</h4>
-                    <button type="button" className="btn btn-primary" onClick={() => this.handleClick(this.props.flightOffer)}>Comprar</button>
+                    <button type="button" className="btn btn-primary" onClick={() => this.handleClick(this.props.flightOffer)}>Adicionar ao carrinho</button>
                 </div>
             </div>
         )
