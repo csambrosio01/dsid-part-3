@@ -1,9 +1,14 @@
 import Api from "../api/Api";
+import StringUtils from "../utils/StringUtils";
 
 const oneDayInMillis = 24 * 60 * 60 * 1000
 const HOTEL_OFFERS = '_hotel_offers';
 
 class HotelService {
+
+    constructor() {
+        this.stringUtils = new StringUtils()
+    }
 
     delete = () => {
         localStorage.removeItem(HOTEL_OFFERS)
@@ -181,6 +186,21 @@ class HotelService {
         }
 
         return Api.post('/hotel-offers', hotelRequest)
+    }
+
+    getAddress = (hotelOffer) => {
+        let address = hotelOffer.hotel.address
+        let addressString = ''
+
+        address.lines.forEach(line => {
+            addressString += this.stringUtils.capitalize(line) + ' '
+        })
+        addressString = addressString.trim()
+        addressString += ', ' + this.stringUtils.capitalize(address.cityName)
+        addressString += (address.stateCode !== undefined) ? ', ' + address.stateCode : ''
+        addressString += ', ' + address.countryCode
+
+        return addressString
     }
 }
 

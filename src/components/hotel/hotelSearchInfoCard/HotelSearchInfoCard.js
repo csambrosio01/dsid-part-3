@@ -24,21 +24,6 @@ class HotelSearchInfoCard extends React.Component {
         return aux
     }
 
-    getAddress = () => {
-        let address = this.props.hotelOffer.hotel.address
-        let addressString = ''
-
-        address.lines.forEach(line => {
-            addressString += this.stringUtils.capitalize(line) + ' '
-        })
-        addressString.trim()
-        addressString += ', ' + this.stringUtils.capitalize(address.cityName)
-        addressString += (address.stateCode !== undefined) ? ', ' + address.stateCode : ''
-        addressString += ', ' + address.countryCode
-
-        return addressString
-    }
-
     getDate = (fieldName) => {
         let date = this.props.hotelOffer.offers[0][fieldName].split('-')
         let month = months[parseInt(date[1]) - 1]
@@ -79,7 +64,7 @@ class HotelSearchInfoCard extends React.Component {
                 </div>
                 <div className="card-header">
                     <h3 className="card-text">Informações básicas:</h3>
-                    <h4 className="card-text">{this.getAddress()}</h4>
+                    <h4 className="card-text">{this.hotelService.getAddress(this.props.hotelOffer)}</h4>
                     <h4 className="card-text">
                         Distância do centro: {hotel.hotelDistance.distance} {hotel.hotelDistance.distanceUnit}
                     </h4>
