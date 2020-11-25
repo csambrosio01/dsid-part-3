@@ -7,6 +7,8 @@ import {store} from "react-notifications-component";
 import HotelService from "../../app/HotelService";
 
 import './Buy.css'
+import ReactStars from "react-stars";
+import StringUtils from "../../utils/StringUtils";
 
 class Buy extends React.Component {
 
@@ -25,6 +27,8 @@ class Buy extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.stringUtils = new StringUtils()
 
         this.flightService = new FlightService()
         this.flightOffers = this.flightService.getCart()
@@ -62,9 +66,7 @@ class Buy extends React.Component {
             }
 
             if (this.hotelOffers) {
-                let hotelOffers = this.hotelOffers.forEach(hotelOffer => {
-
-                })
+                let hotelOffers = this.hotelOffers
 
                 this.setState({hotelOffers})
             }
@@ -116,7 +118,7 @@ class Buy extends React.Component {
         this.props.history.push('/')
     }
 
-    calculateTotal = () => {
+    calculateTotalFlight = () => {
         let total = 0
 
         this.flightOffers.forEach(flightOffer => {
@@ -124,6 +126,20 @@ class Buy extends React.Component {
         })
 
         return total
+    }
+
+    calculateTotalHotel = () => {
+        let total = 0
+
+        this.hotelOffers.forEach(hotelOffer => {
+            total = total + parseFloat(hotelOffer.offers[0].price.total)
+        })
+
+        return total
+    }
+
+    calculateTotal = () => {
+        return this.calculateTotalFlight() + this.calculateTotalHotel()
     }
 
     render() {
@@ -314,6 +330,66 @@ class Buy extends React.Component {
                                 })}
                             </Card>
                         })}
+                        {this.state.hotelOffers.map(hotelOffer => {
+                            return <Card header={"Titular da reserva no hotel " + this.stringUtils.capitalize(hotelOffer.hotel.name)}>
+                                <div className="card-title route label">Adulto 1</div>
+                                <div className="row">
+                                    <div className="form-group col-md-9">
+                                        <label>Nome Completo:</label>
+                                        <input type="text"
+                                               name="name"
+                                               onChange={this.onChange}
+                                               onBlur={this.onBlur}
+                                               className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["name"]}</span>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="form-group col-md-9">
+                                        <label>Telefone</label>
+                                        <NumberFormat name="phone"
+                                                      format="(##) ####-####"
+                                                      onChange={this.onChange}
+                                                      onBlur={this.onBlur}
+                                                      className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["phone"]}</span>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="form-group col-md-9">
+                                        <label>Email</label>
+                                        <input type="text"
+                                               name="mail"
+                                               onChange={this.onChange}
+                                               onBlur={this.onBlur}
+                                               className="form-control"/>
+                                        <span style={{color: "red"}}>{this.state.errors["mail"]}</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label>Tipo e número de documento:</label>
+                                    <div className="row">
+                                        <div className="col-md-3 mb-4">
+                                            <select className="form-control" name="docType">
+                                                <option>CPF</option>
+                                                <option>Passaporte</option>
+                                            </select>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <input type="text"
+                                                       name="document"
+                                                       onChange={this.onChange}
+                                                       onBlur={this.onBlur}
+                                                       className="form-control"/>
+                                                <span
+                                                    style={{color: "red"}}>{this.state.errors["document"]}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Card>
+                        })}
 
                     </div>
                     <div className="col-lg-4">
@@ -394,6 +470,40 @@ class Buy extends React.Component {
                                     <div className="border"/>
                                 </>
                             })}
+                            {this.state.hotelOffers.map(hotelOffer => {
+                                return <>
+                                    <div className="mb-2">
+                                        <div className="card-title route label mb-0">
+                                            {this.stringUtils.capitalize(hotelOffer.hotel.name)}
+                                        </div>
+                                        <ReactStars count={parseFloat(hotelOffer.hotel.rating)}
+                                                    size={25}
+                                                    color1={'#ffffff'}
+                                                    half={false}
+                                                    color2={'#ffd700'}
+                                                    value={parseFloat(hotelOffer.hotel.rating)}
+                                                    edit={false}/>
+                                    </div>
+                                    <div className="one-way label">{this.hotelService.getAddress(hotelOffer)}</div>
+                                    <div className="row">
+                                        <div className="col-xl-6 pr-xl-0">
+                                            <div className="hotel-date-header">Check in</div>
+                                            <div className="hotel-date label mb-0">{this.getDate(hotelOffer.offers[0].checkInDate)}</div>
+                                            <div className="hotel-date-header">16:00</div>
+                                        </div>
+                                        <div className="col-xl-6 px-xl-0">
+                                            <div className="hotel-date-header">Check out</div>
+                                            <div className="hotel-date label mb-0">{this.getDate(hotelOffer.offers[0].checkOutDate)}</div>
+                                            <div className="hotel-date-header">12:00</div>
+                                        </div>
+                                    </div>
+                                    <div className="border"/>
+                                </>
+                            })}
+                            <div className="destination-title label">Valor passagens:
+                                U$ {this.calculateTotalFlight()}</div>
+                            <div className="destination-title label">Valor hoteis:
+                                U$ {this.calculateTotalHotel()}</div>
                             <div className="route label">Valor total:
                                 U$ {this.calculateTotal()}</div>
                             <button type="button" className="btn btn-primary" onClick={() => this.handleClick()}>Comprar</button>
